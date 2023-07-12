@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignupActivity"
+    android:background="@drawable/fondo_signup">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="56dp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="230dp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_nombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:textColorHint="@color/jessmi_yellow"
+            app:startIconDrawable="@drawable/ic_name"
+            app:startIconTint="@color/jessmi_yellow"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/jessmi_yellow">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nombre"
+                android:textColor="@color/jessmi_yellow"
+                android:textStyle="bold" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_apellido"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:textColorHint="@color/jessmi_yellow"
+            app:startIconDrawable="@drawable/ic_lastname"
+            app:startIconTint="@color/jessmi_yellow"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/jessmi_yellow">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Apellido"
+                android:textColor="@color/jessmi_yellow"
+                android:textStyle="bold" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_correo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:textColorHint="@color/jessmi_yellow"
+            app:startIconDrawable="@drawable/ic_email"
+            app:startIconTint="@color/jessmi_yellow"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/jessmi_yellow">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Correo"
+                android:textColor="@color/jessmi_yellow"
+                android:textStyle="bold" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_contrasena"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:textColorHint="@color/jessmi_yellow"
+            app:startIconDrawable="@drawable/ic_password"
+            app:startIconTint="@color/jessmi_yellow"
+            app:endIconMode="password_toggle"
+            app:endIconTint="@color/jessmi_yellow">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Contraseña"
+                android:inputType="textPassword"
+                android:textColor="@color/jessmi_yellow"
+                android:textStyle="bold" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnRegistro"
+            android:layout_width="380dp"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_gravity="center"
+            app:cornerRadius="19dp"
+            android:backgroundTint="@color/jessmi_yellow"
+            android:textColor="@color/default_background"
+            android:textStyle="bold"
+            android:text="CREAR CUENTA"
+            app:icon="@drawable/ic_signup"
+            app:iconGravity="textStart"
+            app:iconTint="@color/default_background" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

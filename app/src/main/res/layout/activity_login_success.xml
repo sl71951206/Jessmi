@@ -1,0 +1,59 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginSuccess">
+
+    <LinearLayout
+        android:id="@+id/contentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- Contenido de tu Activity -->
+
+    </LinearLayout>
+    <!-- Contenido de tu Activity -->
+
+    <LinearLayout
+        android:id="@+id/bottomNavigationLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:background="@color/jessmi_yellow">
+
+        <ImageView
+            android:id="@+id/catalogoIcon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:onClick="onCategoriaClick"
+            android:padding="8dp"
+            android:src="@drawable/ic_product" />
+
+        <ImageView
+            android:id="@+id/homeIcon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_home"
+            android:padding="8dp"
+            android:clickable="true"
+            android:onClick="onHomeClick" />
+
+        <ImageView
+            android:id="@+id/carritoIcon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_carrito"
+            android:padding="8dp"
+            android:clickable="true"
+            android:onClick="onCarritoClick" />
+
+    </LinearLayout>
+
+</RelativeLayout>

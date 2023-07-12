@@ -1,0 +1,18 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.JessmyApp" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/jessmi_yellow</item>
+    </style>
+
+    <style name="Theme.JessmyApp" parent="Base.Theme.JessmyApp" />
+
+    <style name="Theme.JessmyApp.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.JessmyApp.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.JessmyApp.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+</resources>
