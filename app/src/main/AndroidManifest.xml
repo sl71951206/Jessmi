@@ -18,6 +18,11 @@
         tools:replace="android:icon"
         tools:targetApi="31">
         <activity
+            android:name=".LoginExitosoActivity"
+            android:exported="false"
+            android:label="@string/title_activity_login_exitoso"
+            android:theme="@style/Theme.JessmyApp.NoActionBar" />
+        <activity
             android:name=".LoginSuccess"
             android:exported="false" />
         <activity

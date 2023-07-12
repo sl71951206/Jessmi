@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="275dp"
+    android:background="@color/jessmi_yellow"
+    android:gravity="bottom"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:paddingTop="@dimen/nav_header_vertical_spacing"
+        android:src="@drawable/user_jess" />
+
+    <TextView
+        android:id="@+id/perfil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="\nPERFIL DEL USUARIO:"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+    <View
+        android:id="@+id/separacion"
+        android:layout_width="match_parent"
+        android:background="@color/black"
+        android:layout_height="2dp"
+        app:layout_constraintBottom_toBottomOf="@id/perfil"/>
+
+    <TextView
+        android:id="@+id/perfilnombres"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:text="Nombres: Sebastian Smith"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        app:layout_constraintBottom_toBottomOf="@id/separacion"/>
+
+    <TextView
+        android:id="@+id/perfilapellidos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:text="Apellidos: Indigoyen Zea"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        app:layout_constraintBottom_toBottomOf="@id/perfilnombres"/>
+</LinearLayout>

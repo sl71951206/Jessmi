@@ -1,5 +1,4 @@
 package pe.idat.jessmyapp
-
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,7 +8,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         val btnLogin: Button = findViewById(R.id.btnLogin)
         val btnSignup: Button = findViewById(R.id.btnSignup)
         val btnGuest: Button = findViewById(R.id.btnGuest)

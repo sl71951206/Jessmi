@@ -1,6 +1,8 @@
 package pe.idat.jessmyapp
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -24,6 +26,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var txtRecuperar: TextView
     private lateinit var tilCorreo: TextInputLayout
     private lateinit var tilContrasena: TextInputLayout
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +38,8 @@ class LoginActivity : AppCompatActivity() {
         jessmiService = JessmiAdapter.getApiService()
 
 
+        //Se Inicializa SharedPreferences
+        sharedPreferences = getSharedPreferences("login", Context.MODE_PRIVATE)
 
         val btnLogin = findViewById<MaterialButton>(R.id.btnLogin)
         btnLogin.setOnClickListener {
@@ -158,8 +163,12 @@ class LoginActivity : AppCompatActivity() {
             .setConfirmButton("Continuar") { sweetAlertDialog ->
                 // Acciones a realizar al hacer clic en el botón "Entiendo"
                 sweetAlertDialog.dismissWithAnimation()
+                // Guardar el indicador de inicio de sesión exitoso en SharedPreferences
+                val editor = sharedPreferences.edit()
+                editor.putBoolean("logged_in", true)
+                editor.apply()
                 window.decorView.postDelayed({
-                    val intent = Intent(this, LoginSuccess::class.java)
+                    val intent = Intent(this, LoginExitosoActivity::class.java)
                     startActivity(intent)
                     finish()
                 }, 200)
