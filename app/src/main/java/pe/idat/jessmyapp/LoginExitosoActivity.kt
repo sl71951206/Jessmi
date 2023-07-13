@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
 import android.widget.Toast
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -45,6 +46,7 @@ class LoginExitosoActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        recuperarDatosNavigationView()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -68,6 +70,9 @@ class LoginExitosoActivity : AppCompatActivity() {
                 sharedPreferences = getSharedPreferences("login", Context.MODE_PRIVATE)
                 val editor = sharedPreferences.edit()
                 editor.remove("logged_in")
+                editor.remove("name_key")
+                editor.remove("lastname_key")
+                editor.remove("email_key")
                 editor.apply()
                 sweetAlertDialog.dismissWithAnimation()
                 window.decorView.postDelayed({
@@ -114,5 +119,23 @@ class LoginExitosoActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_login_exitoso)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    private fun recuperarDatosNavigationView() {
+        // Recuperar datos de SharedPreferences
+        sharedPreferences = getSharedPreferences("login", Context.MODE_PRIVATE)
+        val name = sharedPreferences.getString("name_key", "")
+        val lastname = sharedPreferences.getString("lastname_key", "")
+        val email = sharedPreferences.getString("email_key", "")
+
+        // Mostrar los datos en el NavigationView
+        val headerView = binding.navView.getHeaderView(0)
+        val txtPerfil_Nombres = headerView.findViewById<TextView>(R.id.perfilnombres)
+        val txt_Perfil_Apellidos = headerView.findViewById<TextView>(R.id.perfilapellidos)
+        val txt_Perfil_Correo=headerView.findViewById<TextView>(R.id.perfilcorreo)
+
+        txtPerfil_Nombres.text = "$name"
+        txt_Perfil_Apellidos.text = "$lastname"
+        txt_Perfil_Correo.text = "$email"
     }
 }

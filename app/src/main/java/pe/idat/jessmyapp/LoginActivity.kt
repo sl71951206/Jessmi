@@ -119,7 +119,10 @@ class LoginActivity : AppCompatActivity() {
                     for (cliente in clientes!!) {
                         val user = "${cliente.nombres}\n" +
                                 " ${cliente.apellidos}\n"
-                        mostrarDialogoLogin(user)
+                        val namekey="${cliente.nombres}"
+                        val lastnamekey="${cliente.apellidos}"
+                        val emailkey="${cliente.correo}"
+                        mostrarDialogoLogin(user,namekey,lastnamekey,emailkey)
 
                     }
                 } else {
@@ -156,7 +159,7 @@ class LoginActivity : AppCompatActivity() {
         return isValid
     }
 
-    private fun mostrarDialogoLogin(user:String) {
+    private fun mostrarDialogoLogin(user:String,name_key:String,lastname_key:String,email_key:String) {
         SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
             .setTitleText("¡LOGIN EXITOSO!")
             .setContentText("Hola, Bienvenid@ "+user)
@@ -166,6 +169,9 @@ class LoginActivity : AppCompatActivity() {
                 // Guardar el indicador de inicio de sesión exitoso en SharedPreferences
                 val editor = sharedPreferences.edit()
                 editor.putBoolean("logged_in", true)
+                editor.putString("name_key", name_key) // Almacena el valor de userkey en SharedPreferences
+                editor.putString("lastname_key",lastname_key)
+                editor.putString("email_key",email_key)
                 editor.apply()
                 window.decorView.postDelayed({
                     val intent = Intent(this, LoginExitosoActivity::class.java)
