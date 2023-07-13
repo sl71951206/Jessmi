@@ -14,22 +14,27 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="110dp"
-        android:layout_height="110dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:src="@drawable/user_jess" />
 
+    <View
+        android:id="@+id/separacion1"
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        app:layout_constraintBottom_toBottomOf="@id/imageView"/>
     <TextView
         android:id="@+id/perfil"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="\nPERFIL DEL USUARIO:"
+        android:text="PERFIL DEL USUARIO:"
         android:textColor="@color/black"
         android:textSize="20dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <View
-        android:id="@+id/separacion"
+        android:id="@+id/separacion2"
         android:layout_width="match_parent"
         android:background="@color/black"
         android:layout_height="2dp"
@@ -40,9 +45,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
-        android:text="Nombres: Sebastian Smith"
+        android:text="\nNombres: Sebastian Smith"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        app:layout_constraintBottom_toBottomOf="@id/separacion"/>
+        app:layout_constraintBottom_toBottomOf="@id/separacion2"/>
 
     <TextView
         android:id="@+id/perfilapellidos"
@@ -50,6 +55,15 @@
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:text="Apellidos: Indigoyen Zea"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        app:layout_constraintBottom_toBottomOf="@id/perfilnombres"/>
+
+    <TextView
+        android:id="@+id/perfilcorreo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:text="Correo: sebastian2004@gmail.com"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintBottom_toBottomOf="@id/perfilnombres"/>
 </LinearLayout>

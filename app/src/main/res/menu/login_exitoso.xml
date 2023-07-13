@@ -2,8 +2,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/btnCerrarSesion"
-        android:orderInCategory="100"
-        android:title="Cerrar Sesión"
-        app:showAsAction="never" />
+        android:id="@+id/bolsaCompras"
+        android:icon="@drawable/ic_product"
+        android:title="Bolsa de Compras"
+        app:showAsAction="ifRoom">
+    </item>
+    <item
+        android:id="@+id/more"
+        android:icon="@drawable/ic_3dots"
+        android:iconTint="@color/black"
+        android:title="Contáctanos"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/btnCerrarSesion"
+                android:icon="@drawable/ic_logout_red"
+                android:iconTint="@color/login_error"
+                android:title="Cerrar Sesión" />
+        </menu>
+    </item>
 </menu>

@@ -3,6 +3,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import cn.pedant.SweetAlert.SweetAlertDialog
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,5 +25,9 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, CatalogoActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    override fun onBackPressed() {
+        finishAffinity()
     }
 }
