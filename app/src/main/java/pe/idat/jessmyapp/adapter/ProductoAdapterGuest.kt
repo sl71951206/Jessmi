@@ -8,25 +8,21 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.bumptech.glide.Glide
 import pe.idat.jessmyapp.R
 import pe.idat.jessmyapp.entities.Producto
 
-class ProductoAdapter(private val productoList: ArrayList<Producto>,private val addToCartListener: AddToCartListener)
-    : RecyclerView.Adapter<ProductoAdapter.ProductoViewHolder>() {
+class ProductoAdapterGuest (private val productoList: ArrayList<Producto>)
+    : RecyclerView.Adapter<ProductoAdapterGuest.ProductoViewHolder>() {
 
     class ProductoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imgProducto: ImageView = itemView.findViewById(R.id.imgProducto)
         val txtProducto: TextView = itemView.findViewById(R.id.txtProducto)
         val txtMarca: TextView = itemView.findViewById(R.id.txtMarca)
         val txtPrecio: TextView = itemView.findViewById(R.id.txtPrecio)
-        val btnAgregar:Button=itemView.findViewById(R.id.btnAgregar)
-    }
-
-    interface AddToCartListener {
-        fun onAddToCartClicked(producto: Producto)
+        val btnAgregar: Button =itemView.findViewById(R.id.btnAgregar)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductoViewHolder {
@@ -50,9 +46,7 @@ class ProductoAdapter(private val productoList: ArrayList<Producto>,private val 
 
         // Agregar el clic del botón
         holder.btnAgregar.setOnClickListener {
-            val context = holder.itemView.context
-            Toast.makeText(context, "Se agregó el producto: ${producto.nombre} - ${producto.marca}", Toast.LENGTH_SHORT).show()
-            addToCartListener.onAddToCartClicked(producto)
+            guestMessage(holder.itemView.context)
         }
 
         holder.imgProducto.setOnClickListener {
@@ -84,7 +78,17 @@ class ProductoAdapter(private val productoList: ArrayList<Producto>,private val 
         btnClose.setOnClickListener {
             dialog.dismiss() // Cierra el cuadro de diálogo
         }
+    }
 
+    //Mensaje para el Usuario Invitado
+    private fun guestMessage(context:Context){
+        SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE)
+            .setTitleText("¿QUIERE COMPRAR EN JESSMI?")
+            .setContentText("Para Hacer Compras usted debe Iniciar Sesión.")
+            .setConfirmButton("OK") { sweetAlertDialog ->
+                sweetAlertDialog.dismissWithAnimation()
+            }
+            .show()
     }
 
 }

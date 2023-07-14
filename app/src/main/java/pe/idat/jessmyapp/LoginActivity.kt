@@ -3,6 +3,7 @@ package pe.idat.jessmyapp
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -31,6 +32,10 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        //Bloquear la Activity en Modo Vertical
+        requestedOrientation= ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
         txtRecuperar = findViewById(R.id.txtRecuperar)
         tilCorreo = findViewById(R.id.til_correo)
         tilContrasena = findViewById(R.id.til_contrasena)

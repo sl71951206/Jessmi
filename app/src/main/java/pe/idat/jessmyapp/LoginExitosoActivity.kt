@@ -3,6 +3,7 @@ package pe.idat.jessmyapp
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -28,17 +29,17 @@ class LoginExitosoActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityLoginExitosoBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //Bloquear la Activity en Modo Vertical
+        requestedOrientation= ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         setSupportActionBar(binding.appBarLoginExitoso.toolbar)
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_login_exitoso)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow

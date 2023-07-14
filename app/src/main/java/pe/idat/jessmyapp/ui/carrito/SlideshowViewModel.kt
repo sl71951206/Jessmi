@@ -1,4 +1,4 @@
-package pe.idat.jessmyapp.ui.slideshow
+package pe.idat.jessmyapp.ui.carrito
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
