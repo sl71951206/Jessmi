@@ -6,6 +6,10 @@
     android:backgroundTint="@color/jessmi_grey"
     android:layout_margin="8dp"
     app:cardCornerRadius="16dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
     app:cardElevation="4dp">
 
     <LinearLayout
@@ -17,7 +21,10 @@
         <ImageView
             android:id="@+id/imgProductoCarrito"
             android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             android:src="@drawable/sol" />
 
         <LinearLayout
@@ -63,7 +70,7 @@
                 android:backgroundTint="@color/login_error"
                 android:textColor="@color/white"
                 android:textStyle="italic"
-                android:text="BORRAR ITEM"
+                android:text="BORRAR"
                 app:icon="@drawable/ic_delete"
                 app:iconSize="25dp"
                 app:iconGravity="textStart"

@@ -11,10 +11,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import pe.idat.jessmyapp.R
 import pe.idat.jessmyapp.entities.Producto
+import pe.idat.jessmyapp.ui.viewmodel.ComunicacionViewModel
 
-class ProductoAdapter(private val productoList: ArrayList<Producto>,private val addToCartListener: AddToCartListener)
+class ProductoAdapter(private val productoList: ArrayList<Producto>, private val viewModel: ComunicacionViewModel)
     : RecyclerView.Adapter<ProductoAdapter.ProductoViewHolder>() {
 
     class ProductoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -23,10 +25,6 @@ class ProductoAdapter(private val productoList: ArrayList<Producto>,private val 
         val txtMarca: TextView = itemView.findViewById(R.id.txtMarca)
         val txtPrecio: TextView = itemView.findViewById(R.id.txtPrecio)
         val btnAgregar:Button=itemView.findViewById(R.id.btnAgregar)
-    }
-
-    interface AddToCartListener {
-        fun onAddToCartClicked(producto: Producto)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductoViewHolder {
@@ -52,7 +50,8 @@ class ProductoAdapter(private val productoList: ArrayList<Producto>,private val 
         holder.btnAgregar.setOnClickListener {
             val context = holder.itemView.context
             Toast.makeText(context, "Se agregó el producto: ${producto.nombre} - ${producto.marca}", Toast.LENGTH_SHORT).show()
-            addToCartListener.onAddToCartClicked(producto)
+            val producto = productoList[position]
+            viewModel.agregarProducto(producto)
         }
 
         holder.imgProducto.setOnClickListener {
@@ -72,6 +71,8 @@ class ProductoAdapter(private val productoList: ArrayList<Producto>,private val 
 
         Glide.with(context)
             .load(producto.foto)
+            .centerCrop()
+            .transform(RoundedCorners(16))
             .into(imageView)
         txtProducto.text = producto.nombre
         txtMarca.text = "MARCA: "+producto.marca

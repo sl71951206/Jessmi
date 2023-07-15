@@ -11,6 +11,6 @@
 
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Catálogo</string>
-    <string name="menu_slideshow">Carrito</string>
+    <string name="menu_slideshow">Carrito de Compras</string>
     <string name="title_activity_login_exitoso">LoginExitosoActivity</string>
 </resources>

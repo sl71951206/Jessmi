@@ -8,10 +8,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import pe.idat.jessmyapp.R
 import pe.idat.jessmyapp.entities.Producto
+import pe.idat.jessmyapp.ui.viewmodel.ComunicacionViewModel
 
-class CarritoAdapter(private val productoList: ArrayList<Producto>)
+class CarritoAdapter(private val productoList: ArrayList<Producto>, private val viewModel: ComunicacionViewModel)
     : RecyclerView.Adapter<CarritoAdapter.CarritoViewHolder>() {
 
     class CarritoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -35,13 +37,15 @@ class CarritoAdapter(private val productoList: ArrayList<Producto>)
         val producto = productoList[position]
         Glide.with(holder.itemView.context)
             .load(producto.foto)
+            .centerCrop()
+            .transform(RoundedCorners(16))
             .into(holder.imgProducto)
         holder.txtProducto.text = producto.nombre
         holder.txtMarca.text = producto.marca
         holder.txtPrecio.text = "S/${producto.precio}"
 
         holder.btnBorrar.setOnClickListener {
-            // Lógica para borrar el producto del carrito
+            viewModel.eliminarProducto(position)
         }
     }
 }
