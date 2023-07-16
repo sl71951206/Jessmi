@@ -13,16 +13,16 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_logout"/>
+        app:srcCompat="@drawable/ic_delete"/>
     <TextView
-        android:id="@+id/txtMensajeToastLogout"
+        android:id="@+id/txtMensajeToastEliminarItemCarrito"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textStyle="bold"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
-        android:text="Usted ha Cerrado Sesión con Éxito"
+        android:text="Producto Eliminado del Carrito"
         android:textColor="@color/white"/>
 
 </LinearLayout>

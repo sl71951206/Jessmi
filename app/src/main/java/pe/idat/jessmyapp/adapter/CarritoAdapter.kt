@@ -1,11 +1,13 @@
 package pe.idat.jessmyapp.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -45,7 +47,20 @@ class CarritoAdapter(private val productoList: ArrayList<Producto>, private val 
         holder.txtPrecio.text = "S/${producto.precio}"
 
         holder.btnBorrar.setOnClickListener {
+            val nombreproducto:String=producto.nombre+"-"+producto.marca
             viewModel.eliminarProducto(position)
+            toastBorrarItemCarrito(holder.itemView.context,nombreproducto)
         }
+    }
+
+    private fun toastBorrarItemCarrito(context: Context,nombreproducto:String) {
+        val inflater = LayoutInflater.from(context)
+        val layout = inflater.inflate(R.layout.toast_eliminar_item_carrito, null)
+        val txtProductoEliminado:TextView=layout.findViewById(R.id.txtMensajeToastEliminarItemCarrito)
+        txtProductoEliminado.text= "$nombreproducto ha sido eliminado del Carrito"
+        val toast = Toast(context)
+        toast.duration = Toast.LENGTH_SHORT
+        toast.view = layout
+        toast.show()
     }
 }

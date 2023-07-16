@@ -117,6 +117,8 @@ class LoginExitosoActivity : AppCompatActivity() {
         toast.show()
     }
 
+
+
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_login_exitoso)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()

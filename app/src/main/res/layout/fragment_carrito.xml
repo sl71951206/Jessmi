@@ -9,7 +9,8 @@
         android:id="@+id/rvCarrito"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/layoutFooter" />
+        android:layout_above="@+id/layoutFooter"
+        android:visibility="gone"/>
 
     <LinearLayout
         android:id="@+id/layoutFooter"
@@ -17,14 +18,16 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:visibility="gone"
+        >
 
         <TextView
             android:id="@+id/txtlabeltotal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="S/"
+            android:text="Total: S/"
             android:textSize="25sp"
             android:textStyle="bold" />
         <TextView
@@ -35,7 +38,7 @@
             android:text="1000000.50"
             android:textSize="25sp"
             android:textStyle="bold"
-            android:paddingHorizontal="2sp"/>
+            android:paddingHorizontal="2sp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnComprarCarrito"
@@ -52,6 +55,18 @@
             app:iconGravity="textStart"
             app:iconTint="@color/black" />
 
+
+
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imgCarritoVacio"
+        android:layout_width="match_parent"
+        android:layout_height="380dp"
+        android:layout_gravity="center"
+        android:src="@drawable/empty_carrito_without_back"
+        android:layout_marginTop="75dp"
+        />
+
 
 </RelativeLayout>

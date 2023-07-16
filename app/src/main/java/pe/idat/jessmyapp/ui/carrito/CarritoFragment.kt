@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -24,6 +26,8 @@ class CarritoFragment : Fragment(){
     private lateinit var carritoAdapter: CarritoAdapter
     private var productoList = ArrayList<Producto>()
     private lateinit var viewModel: ComunicacionViewModel
+    private lateinit var layoutFooter: LinearLayout
+    private lateinit var imgCarritoVacio: ImageView
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -31,11 +35,14 @@ class CarritoFragment : Fragment(){
         rvCarrito = view.findViewById(R.id.rvCarrito)
         txtTotalPagar = view.findViewById(R.id.txtTotalPagar)
         btnComprarCarrito = view.findViewById(R.id.btnComprarCarrito)
+        layoutFooter = view.findViewById(R.id.layoutFooter)
+        imgCarritoVacio = view.findViewById(R.id.imgCarritoVacio)
 
+        imgCarritoVacio = view.findViewById(R.id.imgCarritoVacio)
         viewModel = ViewModelProvider(requireActivity())[ComunicacionViewModel::class.java]
 
 
-        // Configurar el RecyclerView
+        // RecyclerView
         rvCarrito.layoutManager= LinearLayoutManager(context)
         val contenido = viewModel.obtenerContenido().value
         if (contenido != null) {
@@ -48,7 +55,6 @@ class CarritoFragment : Fragment(){
         val totalPagar = calcularTotalPagar()
         txtTotalPagar.text = "$totalPagar"
 
-        // Configurar el botón de compra
         btnComprarCarrito.setOnClickListener {
             // Lógica para realizar la compra
         }
@@ -62,7 +68,17 @@ class CarritoFragment : Fragment(){
             carritoAdapter.notifyDataSetChanged()
             // Recalcular el total a pagar
             val totalPagar = calcularTotalPagar()
-            txtTotalPagar.text = "S/$totalPagar"
+            txtTotalPagar.text = "$totalPagar"
+            // Mostrar u ocultar el ImageView según el carrito esté vacío o no
+            if (productoList.isEmpty()) {
+                imgCarritoVacio.visibility = View.VISIBLE
+                rvCarrito.visibility = View.GONE
+                layoutFooter.visibility = View.GONE
+            } else {
+                imgCarritoVacio.visibility = View.GONE
+                rvCarrito.visibility = View.VISIBLE
+                layoutFooter.visibility = View.VISIBLE
+            }
         }
 
 
