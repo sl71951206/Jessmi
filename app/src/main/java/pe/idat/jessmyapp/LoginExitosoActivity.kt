@@ -71,6 +71,7 @@ class LoginExitosoActivity : AppCompatActivity() {
                 sharedPreferences = getSharedPreferences("login", Context.MODE_PRIVATE)
                 val editor = sharedPreferences.edit()
                 editor.remove("logged_in")
+                editor.remove("id_key")
                 editor.remove("name_key")
                 editor.remove("lastname_key")
                 editor.remove("email_key")

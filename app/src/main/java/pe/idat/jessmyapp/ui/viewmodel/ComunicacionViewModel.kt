@@ -27,4 +27,9 @@ class ComunicacionViewModel : ViewModel() {
             listaProductos.value = currentList
         }
     }
+
+    fun borrarTodo() {
+        listaProductos.value = emptyList()
+    }
+
 }

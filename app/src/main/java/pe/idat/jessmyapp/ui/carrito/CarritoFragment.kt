@@ -1,8 +1,16 @@
 package pe.idat.jessmyapp.ui.carrito
-
+import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,33 +18,48 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cn.pedant.SweetAlert.SweetAlertDialog
+import com.google.android.material.snackbar.Snackbar
+import com.itextpdf.text.*
+import com.itextpdf.text.pdf.PdfPTable
+import com.itextpdf.text.pdf.PdfWriter
 import com.paypal.android.sdk.payments.PayPalConfiguration
 import com.paypal.android.sdk.payments.PayPalPayment
 import com.paypal.android.sdk.payments.PayPalService
 import com.paypal.android.sdk.payments.PaymentActivity
 import com.paypal.android.sdk.payments.PaymentConfirmation
+
 import pe.idat.jessmyapp.R
 import pe.idat.jessmyapp.adapter.CarritoAdapter
 import pe.idat.jessmyapp.entities.Producto
 import pe.idat.jessmyapp.ui.viewmodel.ComunicacionViewModel
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+
 import java.math.BigDecimal
-import java.time.LocalDate
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
-import java.time.LocalTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
-import java.util.TimeZone
+
 
 class CarritoFragment : Fragment() {
+    private lateinit var sharedPreferences: SharedPreferences
     private lateinit var rvCarrito: RecyclerView
     private lateinit var txtTotalPagar: TextView
     private lateinit var btnComprarCarrito: Button
+    private lateinit var btnGenerarCompra: Button
     private lateinit var carritoAdapter: CarritoAdapter
     private var productoList = ArrayList<Producto>()
     private lateinit var viewModel: ComunicacionViewModel
@@ -56,9 +79,11 @@ class CarritoFragment : Fragment() {
         btnComprarCarrito = view.findViewById(R.id.btnComprarCarrito)
         layoutFooter = view.findViewById(R.id.layoutFooter)
         imgCarritoVacio = view.findViewById(R.id.imgCarritoVacio)
+        btnGenerarCompra=view.findViewById(R.id.btnGenerarPedido)
 
         imgCarritoVacio = view.findViewById(R.id.imgCarritoVacio)
         viewModel = ViewModelProvider(requireActivity())[ComunicacionViewModel::class.java]
+
 
 
         // RecyclerView
@@ -76,6 +101,10 @@ class CarritoFragment : Fragment() {
 
         btnComprarCarrito.setOnClickListener {
             mostrarAlertDialogPago()
+        }
+
+        btnGenerarCompra.setOnClickListener{
+            verificarPermisos(it)
         }
 
         // Observar los cambios en la lista de productos del ViewModel
@@ -179,8 +208,163 @@ class CarritoFragment : Fragment() {
         return total
     }
 
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isAccepted ->
+        if (isAccepted) {
+            crearPDF()
+        } else {
+            Toast.makeText(requireContext(), "PERMISOS DENEGADOS", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun verificarPermisos(view: View) {
+        when {
+            ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                Toast.makeText(requireContext(), "PERMISOS CONCEDIDOS", Toast.LENGTH_SHORT).show()
+                crearPDF()
+                viewModel.borrarTodo()
+            }
+
+            ActivityCompat.shouldShowRequestPermissionRationale(
+                requireActivity(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) -> {
+                Snackbar.make(
+                    view,
+                    "ESTE PERMISO ES NECESARIO PARA CREAR EL ARCHIVO",
+                    Snackbar.LENGTH_INDEFINITE
+                ).setAction("OK") {
+                    requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                }.show()
+            }
+
+            else -> {
+                requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            }
+        }
+    }
+
+
+    private fun crearPDF() {
+            try {
+                val carpeta = "/archivosJESSMIpdf"
+                val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath + carpeta
+
+                val dir = File(path)
+                if (!dir.exists()) {
+                    dir.mkdirs()
+                    Toast.makeText(requireContext(), "CARPETA CREADA", Toast.LENGTH_SHORT).show()
+                }
+
+                //recuperarShared
+                sharedPreferences = requireContext().getSharedPreferences("login", Context.MODE_PRIVATE)
+                val name = sharedPreferences.getString("name_key", "")
+                val lastname = sharedPreferences.getString("lastname_key", "")
+
+                val fechahora = obtenerFechaHoraActualEnFormato()
+                val formatohora=obtenerhora()
+
+                val file = File(dir, "PEDIDOJESSMI$formatohora.pdf")
+                val fileOutputStream = FileOutputStream(file)
+
+                val documento = Document()
+                PdfWriter.getInstance(documento, fileOutputStream)
+
+                documento.open()
+
+                // Agregar la imagen desde los recursos de la app
+                val imagenDrawable = R.drawable.jessmilogooriginal
+                val bitmap = BitmapFactory.decodeResource(resources, imagenDrawable)
+                val stream = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+                val byteArray = stream.toByteArray()
+                val image = Image.getInstance(byteArray)
+                image.scaleToFit(98f, 98f)
+
+                // Alineamos la imagen al centro del documento
+                image.alignment = Element.ALIGN_LEFT
+
+                val descjessmi=Paragraph("Av. 13 de Enero 948 - SJL\n" +
+                        "Teléfono: (01)4580547",
+                    FontFactory.getFont("arial", 9f, Font.BOLD, BaseColor.BLACK))
+
+                val titulo = Paragraph(
+                    "DESCRIPCION DEL PEDIDO: \n\n",
+                    FontFactory.getFont("arial", 22f, Font.BOLD, BaseColor.BLUE)
+                )
+                titulo.alignment= Element.ALIGN_CENTER
+                val infoclient = Paragraph(
+                    "NOMBRE DEL CLIENTE: $name $lastname\n",
+                    FontFactory.getFont("arial", 15f, Font.BOLD, BaseColor.MAGENTA)
+                )
+                val fh = Paragraph(
+                    "FECHA Y HORA PEDIDO: $fechahora\n\n",
+                    FontFactory.getFont("arial", 15f, Font.BOLD, BaseColor.BLACK)
+                )
+
+
+                // Agregamos la imagen al documento
+                documento.add(image)
+                documento.add(descjessmi)
+                documento.add(titulo)
+                documento.add(infoclient)
+                documento.add(fh)
+
+                val tabla = PdfPTable(3)
+                tabla.addCell("NOMBRE PROD.")
+                tabla.addCell("MARCA")
+                tabla.addCell("PRECIO")
+
+                for (producto in productoList) {
+                    tabla.addCell(producto.nombre)
+                    tabla.addCell(producto.marca)
+                    tabla.addCell("S/"+producto.precio.toString())
+                }
+
+                val total=calcularTotalPagar()
+                val totalapagar=Paragraph("\nIMPORTE TOTAL: S/$total",
+                    FontFactory.getFont("arial", 15f, Font.BOLD, BaseColor.RED))
+                val nota=Paragraph("\nNOTA: Usted deberá presentar este documento de manera presencial en la ferretería JESSMI SRL" +
+                        " para el respectivo pago y recojo de sus productos.\n" +
+                        "¡MUCHAS GRACIAS POR SU PREFERENCIA!",
+                    FontFactory.getFont("arial", 15f, Font.BOLD, BaseColor.BLACK))
+                documento.add(tabla)
+                documento.add(totalapagar)
+                documento.add(nota)
+
+                documento.close()
+
+                Toast.makeText(
+                    requireContext(),
+                    "PDF generado con éxito. Archivo guardado en Descargas.",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+            } catch (e: FileNotFoundException) {
+                e.printStackTrace()
+            }
+    }
+
+    fun obtenerFechaHoraActualEnFormato(): String {
+        val calendario = Calendar.getInstance()
+        val formatoFechaHora = SimpleDateFormat("dd MMM yyyy HH:mm:ss")
+        return formatoFechaHora.format(calendario.time)
+    }
+
+    fun obtenerhora():String{
+        val calendario=Calendar.getInstance()
+        val formatohora=SimpleDateFormat("_dd_MMM&HH_mm_ss")
+        return formatohora.format(calendario.time)
+    }
+
     companion object {
         private const val PAYPAL_REQUEST_CODE = 123
     }
+
+
 
 }

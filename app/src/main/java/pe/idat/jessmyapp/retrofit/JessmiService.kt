@@ -17,7 +17,7 @@ interface JessmiService {
     fun validarCredenciales(
         @Path("correo") correo: String,
         @Path("contrasena") contrasena: String
-    ): Call<List<Cliente>>
+    ): Call<Cliente>
 
     @POST("/jessmi/cliente/registrar")
     fun registrarCliente(@Body cliente: Cliente): Call<Void>
