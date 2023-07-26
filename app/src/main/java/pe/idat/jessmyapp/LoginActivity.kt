@@ -122,7 +122,7 @@ class LoginActivity : AppCompatActivity() {
                     // Realiza acciones adicionales según sea necesario
                         val user = "${clientes?.nombres}\n" +
                                 " ${clientes?.apellidos}\n"
-                        val idkey=clientes?.id_cliente
+                        val idkey=clientes!!.id_cliente
                         val namekey="${clientes?.nombres}"
                         val lastnamekey="${clientes?.apellidos}"
                         val emailkey="${clientes?.correo}"
@@ -161,7 +161,7 @@ class LoginActivity : AppCompatActivity() {
         return isValid
     }
 
-    private fun mostrarDialogoLogin(user:String,id_key:Int?,name_key:String,lastname_key:String,email_key:String) {
+    private fun mostrarDialogoLogin(user:String,id_key:Int,name_key:String,lastname_key:String,email_key:String) {
         SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
             .setTitleText("¡LOGIN EXITOSO!")
             .setContentText("Hola, Bienvenid@ "+user)
@@ -171,7 +171,7 @@ class LoginActivity : AppCompatActivity() {
                 // Guardar el indicador de inicio de sesión exitoso en SharedPreferences
                 val editor = sharedPreferences.edit()
                 editor.putBoolean("logged_in", true)
-                editor.putInt("id_key", id_key!!)
+                editor.putInt("id_key", id_key)
                 editor.putString("name_key", name_key) // Almacena el valor de userkey en SharedPreferences
                 editor.putString("lastname_key",lastname_key)
                 editor.putString("email_key",email_key)

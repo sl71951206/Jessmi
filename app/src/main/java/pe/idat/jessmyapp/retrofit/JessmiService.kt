@@ -21,4 +21,10 @@ interface JessmiService {
 
     @POST("/jessmi/cliente/registrar")
     fun registrarCliente(@Body cliente: Cliente): Call<Void>
+
+    //Registrar pedido - Registrar Compra
+    @POST("/jessmi/compra/registrarByProductos/{idCliente}")
+    fun registrarPedido(@Path("idCliente") idCliente: Int ,@Body productos:List<Producto>): Call<Void>
+
+
 }

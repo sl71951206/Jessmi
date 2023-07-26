@@ -7,4 +7,5 @@
     <color name="jessmi_grey">#929499</color>
     <color name="login_error">#FF0000</color>
     <color name="login_success">#12D32B</color>
+    <color name="celeste_paypal">#1671BF</color>
 </resources>

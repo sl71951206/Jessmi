@@ -36,11 +36,18 @@ import com.paypal.android.sdk.payments.PayPalPayment
 import com.paypal.android.sdk.payments.PayPalService
 import com.paypal.android.sdk.payments.PaymentActivity
 import com.paypal.android.sdk.payments.PaymentConfirmation
+import pe.idat.jessmyapp.LoginExitosoActivity
 
 import pe.idat.jessmyapp.R
 import pe.idat.jessmyapp.adapter.CarritoAdapter
+import pe.idat.jessmyapp.entities.Cliente
 import pe.idat.jessmyapp.entities.Producto
+import pe.idat.jessmyapp.retrofit.JessmiAdapter
+import pe.idat.jessmyapp.retrofit.JessmiService
 import pe.idat.jessmyapp.ui.viewmodel.ComunicacionViewModel
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileNotFoundException
@@ -55,6 +62,7 @@ import java.util.Calendar
 
 
 class CarritoFragment : Fragment() {
+    private lateinit var jessmiService: JessmiService
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var rvCarrito: RecyclerView
     private lateinit var txtTotalPagar: TextView
@@ -74,6 +82,9 @@ class CarritoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val view = inflater.inflate(R.layout.fragment_carrito, container, false)
+        //Llamar al Servicio
+
+        jessmiService= JessmiAdapter.getApiService()
         rvCarrito = view.findViewById(R.id.rvCarrito)
         txtTotalPagar = view.findViewById(R.id.txtTotalPagar)
         btnComprarCarrito = view.findViewById(R.id.btnComprarCarrito)
@@ -97,14 +108,30 @@ class CarritoFragment : Fragment() {
 
         // Actualizar el total a pagar
         val totalPagar = calcularTotalPagar()
-        txtTotalPagar.text = "$totalPagar"
+        txtTotalPagar.text = "S/$totalPagar"
 
         btnComprarCarrito.setOnClickListener {
             mostrarAlertDialogPago()
         }
 
         btnGenerarCompra.setOnClickListener{
-            verificarPermisos(it)
+            SweetAlertDialog(requireContext(), SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("GENERAR PEDIDO")
+                .setContentText("¿Estás seguro de que desea realizar el pedido de Productos?")
+                .setCancelText("Cancelar")
+                .setConfirmText("Realizar Pedido")
+                .setConfirmClickListener { sweetAlertDialog ->
+                    //En Pedido Confirmado
+                    sweetAlertDialog.dismissWithAnimation()
+                    requireActivity().window.decorView.postDelayed({
+                        val idCliente=recuperarCodCliente()
+                        registrarCompra(idCliente,productoList)
+                        verificarPermisos(it)
+                    }, 175)
+
+                }
+                .show()
+
         }
 
         // Observar los cambios en la lista de productos del ViewModel
@@ -116,7 +143,7 @@ class CarritoFragment : Fragment() {
             carritoAdapter.notifyDataSetChanged()
             // Recalcular el total a pagar
             val totalPagar = calcularTotalPagar()
-            txtTotalPagar.text = "$totalPagar"
+            txtTotalPagar.text = "S/$totalPagar"
             // Mostrar u ocultar el ImageView según el carrito esté vacío o no
             if (productoList.isEmpty()) {
                 imgCarritoVacio.visibility = View.VISIBLE
@@ -166,6 +193,35 @@ class CarritoFragment : Fragment() {
                 println("Fecha: $formattedDate") // Imprimir la fecha en el formato deseado
                 println("Hora: $formattedTime")
                 sweetAlertDialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun registrarCompra(idCliente: Int ,productos:List<Producto>) {
+        val call = jessmiService.registrarPedido(idCliente,productos)
+        call.enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+                    toastPedidoRegistrado(requireContext())
+                } else {
+                    println("Error en Registro de Compra")
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+
+                println("Error de RED!!!!")
+            }
+        })
+    }
+
+    private fun mostrarDialogoPed_Exitoso() {
+        SweetAlertDialog(requireContext(), SweetAlertDialog.SUCCESS_TYPE)
+            .setTitleText("¡PEDIDO DE COMPRA EXITOSO!")
+            .setContentText("Su Doc. de Pedido Virtual(PDF) se aloja en la carpeta DESCARGAS," +
+                    " revíselo detalladamente")
+            .setConfirmButton("Confirmar") { sweetAlertDialog ->
+                sweetAlertDialog.dismissWithAnimation()
             }
             .show()
     }
@@ -224,7 +280,6 @@ class CarritoFragment : Fragment() {
                 requireContext(),
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
             ) == PackageManager.PERMISSION_GRANTED -> {
-                Toast.makeText(requireContext(), "PERMISOS CONCEDIDOS", Toast.LENGTH_SHORT).show()
                 crearPDF()
                 viewModel.borrarTodo()
             }
@@ -338,11 +393,7 @@ class CarritoFragment : Fragment() {
 
                 documento.close()
 
-                Toast.makeText(
-                    requireContext(),
-                    "PDF generado con éxito. Archivo guardado en Descargas.",
-                    Toast.LENGTH_SHORT
-                ).show()
+                mostrarDialogoPed_Exitoso()
 
             } catch (e: FileNotFoundException) {
                 e.printStackTrace()
@@ -359,11 +410,29 @@ class CarritoFragment : Fragment() {
         val calendario=Calendar.getInstance()
         val formatohora=SimpleDateFormat("_dd_MMM&HH_mm_ss")
         return formatohora.format(calendario.time)
+
+    }
+
+    private fun recuperarCodCliente():Int{
+        // Recuperar datos de SharedPreferences
+        sharedPreferences = requireContext().getSharedPreferences("login", Context.MODE_PRIVATE)
+        val id_cliente = sharedPreferences.getInt("id_key",0)
+        return id_cliente
+    }
+
+    private fun toastPedidoRegistrado(context: Context) {
+        val inflater = LayoutInflater.from(context)
+        val layout = inflater.inflate(R.layout.toast_pedido_compra_success, null)
+        val toast = Toast(context)
+        toast.duration = Toast.LENGTH_SHORT
+        toast.view = layout
+        toast.show()
     }
 
     companion object {
         private const val PAYPAL_REQUEST_CODE = 123
     }
+
 
 
 

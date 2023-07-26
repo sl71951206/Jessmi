@@ -27,7 +27,6 @@ class HomeFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         rvProductos = view.findViewById(R.id.rvProductosPopulares)
         rvProductos.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
-
         productoList.clear()
         productoList.add(Producto(1,"Bolsa Cemento","SOL",30.0,"https://aaroncenter.com.pe/wp-content/uploads/2021/08/Cemento-SOL.jpg"))
         productoList.add(Producto(2,"Balde Pintura Gris","AMERICAN COLORS",50.00,"https://promart.vteximg.com.br/arquivos/ids/6641616-1000-1000/147499.jpg?v=638052608416100000"))

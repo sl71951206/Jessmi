@@ -29,7 +29,8 @@
             android:layout_weight="1"
             android:text="Total: S/"
             android:textSize="25sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="gone"/>
         <TextView
             android:id="@+id/txtTotalPagar"
             android:layout_width="wrap_content"
@@ -46,15 +47,15 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             app:cornerRadius="19dp"
-            android:backgroundTint="@color/jessmi_yellow"
-            android:textColor="@color/black"
+            android:backgroundTint="@color/celeste_paypal"
+            android:textColor="@color/white"
             android:textStyle="italic"
             android:text="Comprar"
             app:icon="@drawable/ic_pagar"
             app:iconSize="20sp"
             app:iconGravity="textStart"
             android:visibility="gone"
-            app:iconTint="@color/black" />
+            app:iconTint="@color/white" />
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnGenerarPedido"
             android:layout_width="wrap_content"
@@ -68,7 +69,8 @@
             app:icon="@drawable/ic_pagar"
             app:iconSize="20sp"
             app:iconGravity="textStart"
-            app:iconTint="@color/black" />
+            app:iconTint="@color/black"
+            />
 
 
 

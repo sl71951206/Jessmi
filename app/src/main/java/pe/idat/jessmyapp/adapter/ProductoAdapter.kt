@@ -49,7 +49,8 @@ class ProductoAdapter(private val productoList: ArrayList<Producto>, private val
         // Agregar el clic del botón
         holder.btnAgregar.setOnClickListener {
             val context = holder.itemView.context
-            Toast.makeText(context, "Se agregó el producto: ${producto.nombre} - ${producto.marca}", Toast.LENGTH_SHORT).show()
+            val nombreprod="${producto.nombre} - ${producto.marca}"
+            toastAgregarItemCarrito(context,nombreprod)
             val producto = productoList[position]
             viewModel.agregarProducto(producto)
         }
@@ -86,6 +87,17 @@ class ProductoAdapter(private val productoList: ArrayList<Producto>, private val
             dialog.dismiss() // Cierra el cuadro de diálogo
         }
 
+    }
+
+    private fun toastAgregarItemCarrito(context: Context,nombreproducto:String) {
+        val inflater = LayoutInflater.from(context)
+        val layout = inflater.inflate(R.layout.toast_agregar_item_catalogo, null)
+        val txtMensaje:TextView=layout.findViewById(R.id.txtMensajeToastAgregarItemCarrito)
+        txtMensaje.text= "Se agregó: $nombreproducto"
+        val toast = Toast(context)
+        toast.duration = Toast.LENGTH_SHORT
+        toast.view = layout
+        toast.show()
     }
 
 }
