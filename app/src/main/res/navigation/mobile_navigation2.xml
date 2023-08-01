@@ -22,4 +22,10 @@
         android:name="pe.idat.jessmyapp.ui.carrito.CarritoFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_carrito" />
+
+    <fragment
+        android:id="@+id/nav_historial"
+        android:name="pe.idat.jessmyapp.ui.historial.HistorialFragment"
+        android:label="@string/menu_historial"
+        tools:layout="@layout/fragment_historial" />
 </navigation>

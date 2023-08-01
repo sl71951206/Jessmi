@@ -42,7 +42,7 @@ class LoginExitosoActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_login_exitoso)
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow
+                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow,R.id.nav_historial
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
