@@ -1,5 +1,6 @@
 package pe.idat.jessmyapp.retrofit
 import pe.idat.jessmyapp.entities.Cliente
+import pe.idat.jessmyapp.entities.DetalleCompraMapper
 import pe.idat.jessmyapp.entities.Producto
 import retrofit2.Call
 import retrofit2.http.Body
@@ -25,6 +26,11 @@ interface JessmiService {
     //Registrar pedido - Registrar Compra
     @POST("/jessmi/compra/registrarByProductos/{idCliente}")
     fun registrarPedido(@Path("idCliente") idCliente: Int ,@Body productos:List<Producto>): Call<Void>
+
+    //Historial de Pedidos del Cliente
+    @GET("jessmi/detalle_compra/DetalleConTotal/{idCliente}")
+    fun historialPedidos(@Path("idCliente") idCliente: Int): Call<List<DetalleCompraMapper>>
+
 
 
 }
