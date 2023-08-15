@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +23,9 @@ class ProductoAdapterGuest (private val productoList: ArrayList<Producto>)
         val txtProducto: TextView = itemView.findViewById(R.id.txtProducto)
         val txtMarca: TextView = itemView.findViewById(R.id.txtMarca)
         val txtPrecio: TextView = itemView.findViewById(R.id.txtPrecio)
+        val btnMinus: ImageButton =itemView.findViewById(R.id.btnMinus)
+        val txtCantidad: TextView =itemView.findViewById(R.id.txtCantidad)
+        val btnAdd: ImageButton =itemView.findViewById(R.id.btnAdd)
         val btnAgregar: Button =itemView.findViewById(R.id.btnAgregar)
     }
 
@@ -44,7 +48,22 @@ class ProductoAdapterGuest (private val productoList: ArrayList<Producto>)
         holder.txtMarca.text = "MARCA: "+producto.marca
         holder.txtPrecio.text ="S/"+producto.precio.toString()
 
-        // Agregar el clic del botón
+        holder.btnMinus.setOnClickListener {
+            var cantidad = holder.txtCantidad.text.toString().toInt()
+            if (cantidad > 1) {
+                cantidad--
+                holder.txtCantidad.text = cantidad.toString()
+            }
+        }
+
+        holder.btnAdd.setOnClickListener {
+            var cantidad = holder.txtCantidad.text.toString().toInt()
+            if (cantidad+1 < producto.stock) {
+                cantidad++
+                holder.txtCantidad.text = cantidad.toString()
+            }
+        }
+
         holder.btnAgregar.setOnClickListener {
             guestMessage(holder.itemView.context)
         }
@@ -52,6 +71,7 @@ class ProductoAdapterGuest (private val productoList: ArrayList<Producto>)
         holder.imgProducto.setOnClickListener {
             mostrarDialogo(producto, holder.itemView.context)
         }
+
     }
 
     private fun mostrarDialogo(producto: Producto, context: Context) {
@@ -62,6 +82,7 @@ class ProductoAdapterGuest (private val productoList: ArrayList<Producto>)
         val imageView = dialogView.findViewById<ImageView>(R.id.img_Detalle)
         val txtProducto = dialogView.findViewById<TextView>(R.id.txtDetalleProducto)
         val txtMarca = dialogView.findViewById<TextView>(R.id.txtDetalleMarca)
+        val txtStock = dialogView.findViewById<TextView>(R.id.txtDetalleStock)
         val txtPrecio = dialogView.findViewById<TextView>(R.id.txtDetallePrecio)
 
         Glide.with(context)
@@ -69,6 +90,7 @@ class ProductoAdapterGuest (private val productoList: ArrayList<Producto>)
             .into(imageView)
         txtProducto.text = producto.nombre
         txtMarca.text = "MARCA: "+producto.marca
+        txtStock.text = "STOCK: "+producto.stock
         txtPrecio.text = "S/"+producto.precio.toString()
 
         val dialog = dialogBuilder.create()

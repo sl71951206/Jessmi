@@ -7,12 +7,19 @@ import pe.idat.jessmyapp.entities.Producto
 
 class ComunicacionViewModel : ViewModel() {
     private val listaProductos: MutableLiveData<List<Producto>?> = MutableLiveData()
+    private val listaProductos2: MutableLiveData<Map<Producto, Int>?> = MutableLiveData()
 
     // Función para agregar un producto a la lista
     fun agregarProducto(producto: Producto) {
         val currentList = listaProductos.value.orEmpty().toMutableList()
         currentList.add(producto)
         listaProductos.value = currentList
+    }
+
+    fun agregarProductos(producto: Producto, cantidad: Int) {
+        val currentList = listaProductos2.value.orEmpty().toMutableMap()
+        currentList[producto] = cantidad
+        listaProductos2.value = currentList
     }
 
     // Método para obtener el contenido del ViewModel

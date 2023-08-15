@@ -3,14 +3,12 @@ package pe.idat.jessmyapp.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import pe.idat.jessmyapp.R
-import pe.idat.jessmyapp.entities.DetalleCompraMapper
+import pe.idat.jessmyapp.entities.CompraMapper
 
-class HistorialAdapter(private val historialList: ArrayList<DetalleCompraMapper>)
+class HistorialAdapter(private val historialList: ArrayList<CompraMapper>)
     :RecyclerView.Adapter<HistorialAdapter.HistorialViewHolder>(){
 
 

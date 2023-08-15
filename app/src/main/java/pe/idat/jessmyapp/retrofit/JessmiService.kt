@@ -1,6 +1,6 @@
 package pe.idat.jessmyapp.retrofit
 import pe.idat.jessmyapp.entities.Cliente
-import pe.idat.jessmyapp.entities.DetalleCompraMapper
+import pe.idat.jessmyapp.entities.CompraMapper
 import pe.idat.jessmyapp.entities.Producto
 import retrofit2.Call
 import retrofit2.http.Body
@@ -14,23 +14,29 @@ interface JessmiService {
     fun getProductos(): Call<List<Producto>>
 
 
-    @GET("jessmi/cliente/buscar/{correo}/{contrasena}")
+    @POST("jessmi/cliente/buscarPorCorreoRetrofit")
     fun validarCredenciales(
-        @Path("correo") correo: String,
-        @Path("contrasena") contrasena: String
+        @Body cliente: Cliente
     ): Call<Cliente>
+
+    @GET("/jessmi/cliente/buscarPorCorreo/{correo}")
+    fun buscarClientePorCorreo(@Path("correo") correo: String): Call<Cliente>
 
     @POST("/jessmi/cliente/registrar")
     fun registrarCliente(@Body cliente: Cliente): Call<Void>
 
+    @GET("jessmi/producto/masVendidos")
+    fun getMasVendidos(): Call<List<Producto>>
+
+    @GET("jessmi/producto/masNuevos")
+    fun getMasNuevos(): Call<List<Producto>>
+
     //Registrar pedido - Registrar Compra
-    @POST("/jessmi/compra/registrarByProductos/{idCliente}")
+    @POST("/jessmi/compra/registrarByComponents/{idCliente}")
     fun registrarPedido(@Path("idCliente") idCliente: Int ,@Body productos:List<Producto>): Call<Void>
 
     //Historial de Pedidos del Cliente
-    @GET("jessmi/detalle_compra/DetalleConTotal/{idCliente}")
-    fun historialPedidos(@Path("idCliente") idCliente: Int): Call<List<DetalleCompraMapper>>
-
-
+    @GET("jessmi/compra/buscarTotalPorIdCliente/{idCliente}")
+    fun historialPedidos(@Path("idCliente") idCliente: Int): Call<List<CompraMapper>>
 
 }

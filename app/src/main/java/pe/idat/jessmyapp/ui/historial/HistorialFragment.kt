@@ -11,10 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import pe.idat.jessmyapp.R
 import pe.idat.jessmyapp.adapter.HistorialAdapter
-import pe.idat.jessmyapp.adapter.ProductoAdapter
-import pe.idat.jessmyapp.adapter.ProductoAdapterGuest
-import pe.idat.jessmyapp.entities.DetalleCompraMapper
-import pe.idat.jessmyapp.entities.Producto
+import pe.idat.jessmyapp.entities.CompraMapper
 import pe.idat.jessmyapp.retrofit.JessmiAdapter
 import retrofit2.Call
 import retrofit2.Callback
@@ -36,8 +33,8 @@ class HistorialFragment : Fragment()  {
         rvHistorial.layoutManager = LinearLayoutManager(context)
 
         val callStaff = JessmiAdapter.getApiService().historialPedidos(recuperarCodCliente())
-        callStaff.enqueue(object : Callback<List<DetalleCompraMapper>> {
-            override fun onResponse(call: Call<List<DetalleCompraMapper>>, response: Response<List<DetalleCompraMapper>>) {
+        callStaff.enqueue(object : Callback<List<CompraMapper>> {
+            override fun onResponse(call: Call<List<CompraMapper>>, response: Response<List<CompraMapper>>) {
                 if (response.isSuccessful) {
                     val list = ArrayList(response.body())
                     if (list.isNotEmpty()){
@@ -54,7 +51,7 @@ class HistorialFragment : Fragment()  {
                 }
             }
 
-            override fun onFailure(call: Call<List<DetalleCompraMapper>>, t: Throwable) {
+            override fun onFailure(call: Call<List<CompraMapper>>, t: Throwable) {
                 println("HAY UN ERROR JOVEN")
             }
         })

@@ -18,6 +18,7 @@ class ProductosPopularesAdapter(private val productoList: ArrayList<Producto>)
     class ProductosPopularesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imgProducto: ImageView = itemView.findViewById(R.id.img_prod_popular)
         val txtProducto: TextView = itemView.findViewById(R.id.txt_nombre_prod_popular)
+        val txtMarcaProduct: TextView = itemView.findViewById(R.id.txt_marca_prod_popular)
     }
 
 
@@ -33,7 +34,8 @@ class ProductosPopularesAdapter(private val productoList: ArrayList<Producto>)
             .centerCrop()
             .transform(RoundedCorners(16))
             .into(holder.imgProducto)
-        holder.txtProducto.text = "${producto.nombre}\n${producto.marca}"
+        holder.txtProducto.text = "${producto.nombre}"
+        holder.txtMarcaProduct.text = "${producto.marca}"
     }
 
     override fun getItemCount(): Int {

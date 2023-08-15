@@ -269,6 +269,7 @@ class CarritoFragment : Fragment() {
     ) { isAccepted ->
         if (isAccepted) {
             crearPDF()
+            viewModel.borrarTodo()
         } else {
             Toast.makeText(requireContext(), "PERMISOS DENEGADOS", Toast.LENGTH_SHORT).show()
         }

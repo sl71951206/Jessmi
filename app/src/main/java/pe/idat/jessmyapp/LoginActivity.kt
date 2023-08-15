@@ -14,6 +14,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import pe.idat.jessmyapp.entities.Cliente
 import pe.idat.jessmyapp.retrofit.JessmiAdapter
@@ -54,7 +55,8 @@ class LoginActivity : AppCompatActivity() {
             tilCorreo.clearFocus()
             tilContrasena.clearFocus()
             if (validateInputs(correo, contrasena)) {
-                login(correo, contrasena)
+                val cliente = Cliente(0, "", "", correo, contrasena)
+                login(cliente)
             }
         }
 
@@ -87,10 +89,6 @@ class LoginActivity : AppCompatActivity() {
             }
         })
 
-
-
-
-        txtRecuperar = findViewById(R.id.txtRecuperar)
         txtRecuperar.setOnClickListener {
             showRecuperarDialog()
         }
@@ -103,16 +101,51 @@ class LoginActivity : AppCompatActivity() {
         builder.setView(dialogView)
         val alertDialog = builder.create()
 
+        val dialogText = dialogView.findViewById<TextInputLayout>(R.id.til_correo)
+        dialogText.editText?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Acciones a realizar antes de que el texto cambie
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                dialogText.error=null
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                // Acciones a realizar después de que el texto cambie
+            }
+        })
         val dialogButton = dialogView.findViewById<Button>(R.id.btnRecuperar)
         dialogButton.setOnClickListener {
-            alertDialog.dismiss()
+            val txt = dialogText.editText?.text.toString()
+            if (txt == "") {
+                dialogText.error = "Este campo no puede estar vacío"
+            } else {
+                buscarCliente(txt, dialogText, alertDialog)
+            }
         }
         alertDialog.show()
     }
 
-    private fun login(correo: String, contrasena: String) {
+    private fun buscarCliente(correo: String, txt: TextInputLayout, alerta: AlertDialog) {
+        val call = jessmiService.buscarClientePorCorreo(correo)
+        call.enqueue(object: retrofit2.Callback<Cliente> {
+            override fun onResponse(call: Call<Cliente>, response: Response<Cliente>) {
+                if (response.isSuccessful) {
+                    alerta.dismiss()
+                    mostrarDialogoRecuperacion()
+                } else {
+                    txt.error = "Correo electrónico no registrado"
+                }
+            }
+
+            override fun onFailure(call: Call<Cliente>, t: Throwable) {}
+        })
+    }
+
+    private fun login(cliente: Cliente) {
         // Crea la llamada a la API para el endpoint de validarCredenciales
-        val call = jessmiService.validarCredenciales(correo, contrasena)
+        val call = jessmiService.validarCredenciales(cliente)
 
         // Realiza la llamada asíncrona
         call.enqueue(object : retrofit2.Callback<Cliente> {
@@ -190,6 +223,19 @@ class LoginActivity : AppCompatActivity() {
         SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
             .setTitleText("UY, PARECE QUE HUBO UN ERROR...")
             .setContentText("Tus Credenciales son Incorrectas.\nVuelve a Intentarlo")
+            .setConfirmButton("Entiendo") { sweetAlertDialog ->
+                // Acciones a realizar al hacer clic en el botón "Entiendo"
+                sweetAlertDialog.dismissWithAnimation()
+            }
+            .show()
+    }
+
+    private fun mostrarDialogoRecuperacion() {
+
+        SweetAlertDialog(this, SweetAlertDialog.NORMAL_TYPE)
+            .setTitleText("SE ENVIÓ CORREO DE RECUPERACIÓN")
+            .setContentText("Ya se envió un correo a tu correo electrónico." +
+                    " Revísalo para poder cambiar la contraseña")
             .setConfirmButton("Entiendo") { sweetAlertDialog ->
                 // Acciones a realizar al hacer clic en el botón "Entiendo"
                 sweetAlertDialog.dismissWithAnimation()

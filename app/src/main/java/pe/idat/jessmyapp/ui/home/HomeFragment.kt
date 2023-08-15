@@ -16,28 +16,67 @@ import pe.idat.jessmyapp.adapter.CarritoAdapter
 import pe.idat.jessmyapp.adapter.ProductoAdapter
 import pe.idat.jessmyapp.adapter.ProductosPopularesAdapter
 import pe.idat.jessmyapp.entities.Producto
+import pe.idat.jessmyapp.retrofit.JessmiAdapter
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class HomeFragment : Fragment() {
     private lateinit var rvProductos: RecyclerView
+    private lateinit var rvProductosNuevos: RecyclerView
     private lateinit var popularAdapter: ProductosPopularesAdapter
-    private var productoList = ArrayList<Producto>()
+    private lateinit var popularAdapter2: ProductosPopularesAdapter
     private val list = mutableListOf<CarouselItem>()
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         rvProductos = view.findViewById(R.id.rvProductosPopulares)
         rvProductos.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
-        productoList.clear()
-        productoList.add(Producto(1,"Bolsa Cemento","SOL",30.0,"https://aaroncenter.com.pe/wp-content/uploads/2021/08/Cemento-SOL.jpg"))
-        productoList.add(Producto(2,"Balde Pintura Gris","AMERICAN COLORS",50.00,"https://promart.vteximg.com.br/arquivos/ids/6641616-1000-1000/147499.jpg?v=638052608416100000"))
-        productoList.add(Producto(3,"Taladro","BAUKER",200.0,"https://sodimac.scene7.com/is/image/SodimacPeru/8739749_00?wid=800&hei=800&qlt=70"))
-        productoList.add(Producto(4,"Pegamento Interiores","CHEMA",200.0,"https://promart.vteximg.com.br/arquivos/ids/2984097-1000-1000/9902193.jpg?v=637727874603270000"))
-        productoList.add(Producto(5,"Foco Led 4W","PHILIPS",8.0,"https://promart.vteximg.com.br/arquivos/ids/6394206-1000-1000/132826.jpg?v=637959391834630000"))
-        productoList.add(Producto(6,"Tanque 1500L","Rotoplas",8.0,"https://promart.vteximg.com.br/arquivos/ids/7133655-1000-1000/128778.jpg?v=638228748341730000"))
+        val callStaff = JessmiAdapter.getApiService().getMasVendidos()
+        callStaff.enqueue(object : Callback<List<Producto>> {
+            override fun onResponse(call: Call<List<Producto>>, response: Response<List<Producto>>) {
+                if (response.isSuccessful) {
+                    val list = ArrayList(response.body())
+                    for (producto in list) {
+                        println("Nombre: ${producto.nombre}")
+                        println("Marca: ${producto.marca}")
+                        println("Precio: ${producto.precio}")
+                        // Opcionalmente, puedes mostrar los resultados en un TextView o en otro elemento de la interfaz de usuario
+                    }
+                    popularAdapter = ProductosPopularesAdapter(list)
+                    rvProductos.adapter = popularAdapter
+                    popularAdapter.notifyDataSetChanged()
+                }
+            }
 
-        popularAdapter = ProductosPopularesAdapter(productoList)
-        rvProductos.adapter = popularAdapter
+            override fun onFailure(call: Call<List<Producto>>, t: Throwable) {
+                println("HAY UN ERROR JOVEN")
+            }
+        })
 
+        rvProductosNuevos = view.findViewById(R.id.rvProductosNuevos)
+        rvProductosNuevos.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
+        val callStaff2 = JessmiAdapter.getApiService().getMasNuevos()
+        callStaff2.enqueue(object : Callback<List<Producto>> {
+            override fun onResponse(call: Call<List<Producto>>, response: Response<List<Producto>>) {
+                if (response.isSuccessful) {
+                    val list = ArrayList(response.body())
+                    for (producto in list) {
+                        println("Nombre: ${producto.nombre}")
+                        println("Marca: ${producto.marca}")
+                        println("Precio: ${producto.precio}")
+                        // Opcionalmente, puedes mostrar los resultados en un TextView o en otro elemento de la interfaz de usuario
+                    }
+                    popularAdapter2 = ProductosPopularesAdapter(list)
+                    rvProductosNuevos.adapter = popularAdapter2
+                    popularAdapter2.notifyDataSetChanged()
+                }
+            }
+
+            override fun onFailure(call: Call<List<Producto>>, t: Throwable) {
+                println("HAY UN ERROR JOVEN")
+            }
+        })
 
         list.clear()
 

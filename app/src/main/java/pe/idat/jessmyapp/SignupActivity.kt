@@ -4,11 +4,9 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Button
-import android.widget.Toast
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.textfield.TextInputLayout
 import pe.idat.jessmyapp.entities.Cliente
@@ -106,15 +104,30 @@ class SignupActivity : AppCompatActivity() {
                     validarContrasena(contrasena, tilContrasena)
 
             if (puerta == 4) {
-                registrarCliente(nombre, apellido, correo, contrasena)
+                val cliente = Cliente(0, nombre, apellido, correo, contrasena)
+                buscarCliente(cliente)
             } else {
                 mostrarDialogoErrorRegistro()
             }
         }
     }
 
-    private fun registrarCliente(nombre: String, apellido: String, correo: String, contrasena: String) {
-        val cliente = Cliente(0, nombre, apellido, correo, contrasena)
+    private fun buscarCliente(cliente: Cliente) {
+        val call = jessmiService.buscarClientePorCorreo(cliente.correo)
+        call.enqueue(object: retrofit2.Callback<Cliente> {
+            override fun onResponse(call: Call<Cliente>, response: Response<Cliente>) {
+                if (response.isSuccessful) {
+                    mostrarDialogoCorreoRepetido()
+                } else {
+                    registrarCliente(cliente)
+                }
+            }
+
+            override fun onFailure(call: Call<Cliente>, t: Throwable) {}
+        })
+    }
+
+    private fun registrarCliente(cliente: Cliente) {
         val call = jessmiService.registrarCliente(cliente)
         call.enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
@@ -132,7 +145,7 @@ class SignupActivity : AppCompatActivity() {
     }
 
     private fun validarNombres(nombres: String, campo: TextInputLayout): Int {
-        val patron = "^[a-zA-ZáéíóúÁÉÍÓÚ ]{2,}$" // Permite espacios en blanco en los nombres
+        val patron = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{2,}$" // Permite espacios en blanco en los nombres
         return if (nombres.length < 2) {
             campo.error = "No puede tener menos de dos caracteres."
             0
@@ -146,7 +159,7 @@ class SignupActivity : AppCompatActivity() {
     }
 
     private fun validarCorreo(correo: String, campo: TextInputLayout): Int {
-        val patron = Regex("^[A-Za-z0-9_]{2,}@[A-Za-z]{2,}\\.[A-Za-z.]{2,}$")
+        val patron = Regex("^[A-Za-z0-9._+-]{2,}@[A-Za-z]{2,}\\.[A-Za-z]{2,}(\\.[A-Za-z]{2,})?$")
         return if (!correo.matches(patron)) {
             campo.error = "No es un correo válido."
             0
@@ -191,6 +204,17 @@ class SignupActivity : AppCompatActivity() {
         SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
             .setTitleText("UY, PARECE QUE HAY ERRORES")
             .setContentText("Se han Detectado Errores en uno o mas campos del Formulario.")
+            .setConfirmButton("Entiendo") { sweetAlertDialog ->
+                sweetAlertDialog.dismissWithAnimation()
+
+            }
+            .show()
+    }
+
+    private fun mostrarDialogoCorreoRepetido() {
+        SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+            .setTitleText("ESE CORREO YA SE ENCUENTRA REGISTRADO")
+            .setContentText("El correo que usted ha ingresado ya se encuentra en nuestra base de datos.")
             .setConfirmButton("Entiendo") { sweetAlertDialog ->
                 sweetAlertDialog.dismissWithAnimation()
 

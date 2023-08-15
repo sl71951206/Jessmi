@@ -1,6 +1,6 @@
 package pe.idat.jessmyapp.entities
 
-class DetalleCompraMapper (
+class CompraMapper (
 
     val cod_compra :Int,
     val fecha_compra:String,

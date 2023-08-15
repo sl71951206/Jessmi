@@ -10,11 +10,6 @@
             android:title="@string/menu_home" />
 
         <item
-            android:id="@+id/nav_historial"
-            android:icon="@drawable/ic_historial"
-            android:title="@string/menu_historial"/>
-
-        <item
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_product"
             android:title="Catálogo" />
@@ -22,5 +17,10 @@
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_carrito"
             android:title="Carrito Compras" />
+
+        <item
+            android:id="@+id/nav_historial"
+            android:icon="@drawable/ic_historial"
+            android:title="@string/menu_historial"/>
     </group>
 </menu>
