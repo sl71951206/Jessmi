@@ -259,7 +259,7 @@ class CarritoFragment : Fragment() {
     private fun calcularTotalPagar(): Double {
         var total = 0.0
         for (producto in productoList) {
-            total += producto.precio
+            total += (producto.precio * producto.cantidad)
         }
         return total
     }
@@ -370,15 +370,21 @@ class CarritoFragment : Fragment() {
                 documento.add(infoclient)
                 documento.add(fh)
 
-                val tabla = PdfPTable(3)
-                tabla.addCell("NOMBRE PROD.")
+                val tabla = PdfPTable(5)
+                tabla.addCell("NOMBRE")
                 tabla.addCell("MARCA")
                 tabla.addCell("PRECIO")
+                tabla.addCell("CANTIDAD")
+                tabla.addCell("SUBTOTAL")
 
                 for (producto in productoList) {
+                    val cantidad = producto.cantidad
+                    val precio = producto.precio
                     tabla.addCell(producto.nombre)
                     tabla.addCell(producto.marca)
-                    tabla.addCell("S/"+producto.precio.toString())
+                    tabla.addCell("S/"+precio.toString())
+                    tabla.addCell(cantidad.toString())
+                    tabla.addCell("S/"+(precio*cantidad).toString())
                 }
 
                 val total=calcularTotalPagar()

@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/layoutFooter"
-        android:visibility="visible"/>
+        android:visibility="gone"/>
 
     <LinearLayout
         android:id="@+id/layoutFooter"
@@ -19,7 +19,7 @@
         android:orientation="vertical"
         android:layout_alignParentBottom="true"
         android:padding="16dp"
-        android:visibility="visible"
+        android:visibility="gone"
         >
 
         <LinearLayout
@@ -83,7 +83,7 @@
     </LinearLayout>
 
     <ImageView
-        android:visibility="gone"
+        android:visibility="visible"
         android:id="@+id/imgCarritoVacio"
         android:layout_width="match_parent"
         android:layout_height="380dp"

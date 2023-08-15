@@ -16,12 +16,6 @@ class ComunicacionViewModel : ViewModel() {
         listaProductos.value = currentList
     }
 
-    fun agregarProductos(producto: Producto, cantidad: Int) {
-        val currentList = listaProductos2.value.orEmpty().toMutableMap()
-        currentList[producto] = cantidad
-        listaProductos2.value = currentList
-    }
-
     // Método para obtener el contenido del ViewModel
     fun obtenerContenido(): LiveData<List<Producto>?> {
         return listaProductos
@@ -31,6 +25,15 @@ class ComunicacionViewModel : ViewModel() {
         val currentList = listaProductos.value.orEmpty().toMutableList()
         if (position in currentList.indices) {
             currentList.removeAt(position)
+            listaProductos.value = currentList
+        }
+    }
+
+    fun actualizarProducto(position: Int, producto: Producto) {
+        val currentList = listaProductos.value.orEmpty().toMutableList()
+        if (position in currentList.indices) {
+            currentList.removeAt(position)
+            currentList.add(position, producto)
             listaProductos.value = currentList
         }
     }

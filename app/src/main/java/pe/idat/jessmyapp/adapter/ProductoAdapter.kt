@@ -73,6 +73,7 @@ class ProductoAdapter(private val productoList: ArrayList<Producto>, private val
             val nombreprod="${producto.nombre} - ${producto.marca}"
             toastAgregarItemCarrito(context,nombreprod)
             val producto = productoList[position]
+            producto.cantidad = cantidad
             viewModel.agregarProducto(producto)
         }
 

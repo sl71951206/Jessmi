@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -23,7 +24,10 @@ class CarritoAdapter(private val productoList: ArrayList<Producto>, private val 
         val txtProducto: TextView = itemView.findViewById(R.id.txtProductoCarrito)
         val txtMarca: TextView = itemView.findViewById(R.id.txtMarcaCarrito)
         val txtPrecio: TextView = itemView.findViewById(R.id.txtPrecioCarrito)
-        val btnBorrar: Button = itemView.findViewById(R.id.btnBorrarCarrito)
+        val txtCantidad: TextView = itemView.findViewById(R.id.txtCantidadCarrito)
+        val btnMinus: ImageButton = itemView.findViewById(R.id.btnMinusCarrito)
+        val btnAdd: ImageButton = itemView.findViewById(R.id.btnAddCarrito)
+        val btnBorrar: ImageButton = itemView.findViewById(R.id.btnBorrarCarrito)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarritoViewHolder {
@@ -44,7 +48,27 @@ class CarritoAdapter(private val productoList: ArrayList<Producto>, private val 
             .into(holder.imgProducto)
         holder.txtProducto.text = producto.nombre
         holder.txtMarca.text = producto.marca
-        holder.txtPrecio.text = "S/${producto.precio}"
+        val mult = producto.cantidad * producto.precio
+        holder.txtPrecio.text = "S/${mult}"
+        holder.txtCantidad.text = producto.cantidad.toString()
+
+        holder.btnMinus.setOnClickListener {
+            if (producto.cantidad > 1) {
+                producto.cantidad--
+                holder.txtCantidad.text = producto.cantidad.toString()
+                holder.txtPrecio.text = "S/${producto.cantidad * producto.precio}"
+                viewModel.actualizarProducto(position, producto)
+            }
+        }
+
+        holder.btnAdd.setOnClickListener {
+            if (producto.cantidad+1 < producto.stock) {
+                producto.cantidad++
+                holder.txtCantidad.text = producto.cantidad.toString()
+                holder.txtPrecio.text = "S/${producto.cantidad * producto.precio}"
+                viewModel.actualizarProducto(position, producto)
+            }
+        }
 
         holder.btnBorrar.setOnClickListener {
             val nombreproducto:String=producto.nombre+"-"+producto.marca

@@ -6,6 +6,7 @@ package pe.idat.jessmyapp.entities
     val marca:String,
     val precio:Double,
     val foto:String,
-    val stock:Int
+    val stock:Int,
+    var cantidad:Int
 
     )
