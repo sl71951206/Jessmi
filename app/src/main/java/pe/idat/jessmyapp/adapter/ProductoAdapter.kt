@@ -25,6 +25,7 @@ class ProductoAdapter(private val productoList: ArrayList<Producto>, private val
         val txtProducto: TextView = itemView.findViewById(R.id.txtProducto)
         val txtMarca: TextView = itemView.findViewById(R.id.txtMarca)
         val txtPrecio: TextView = itemView.findViewById(R.id.txtPrecio)
+        val txtPocoStock: TextView = itemView.findViewById(R.id.txtPocoStock)
         val btnMinus: ImageButton =itemView.findViewById(R.id.btnMinus)
         val txtCantidad: TextView =itemView.findViewById(R.id.txtCantidad)
         val btnAdd: ImageButton =itemView.findViewById(R.id.btnAdd)
@@ -49,6 +50,18 @@ class ProductoAdapter(private val productoList: ArrayList<Producto>, private val
         holder.txtProducto.text = producto.nombre
         holder.txtMarca.text = "MARCA: "+producto.marca
         holder.txtPrecio.text ="S/"+producto.precio.toString()
+
+        if (producto.stock <= 10) {
+            holder.txtPocoStock.visibility = View.VISIBLE
+            if (producto.stock <= 1) {
+                holder.txtPocoStock.text = "Producto agotado"
+                holder.btnAgregar.isEnabled = false
+            } else {
+                holder.txtPocoStock.text = "¡Solo quedan pocos en stock!"
+            }
+        } else {
+            holder.txtPocoStock.visibility = View.GONE
+        }
 
         holder.btnMinus.setOnClickListener {
             var cantidad = holder.txtCantidad.text.toString().toInt()
@@ -110,7 +123,6 @@ class ProductoAdapter(private val productoList: ArrayList<Producto>, private val
         btnClose.setOnClickListener {
             dialog.dismiss() // Cierra el cuadro de diálogo
         }
-
     }
 
     private fun toastAgregarItemCarrito(context: Context,nombreproducto:String) {

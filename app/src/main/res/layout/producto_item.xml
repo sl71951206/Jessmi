@@ -57,8 +57,8 @@
                     android:text="SOL" />
 
                 <View
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
                     />
                 <TextView
                     android:id="@+id/txtPrecio"
@@ -69,6 +69,20 @@
                     android:textStyle="bold"
                     android:text="Precio" />
 
+                <View
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    />
+
+                <TextView
+                    android:id="@+id/txtPocoStock"
+                    android:textColor="@color/login_error"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:text="¡Solo quedan pocos en stock!"
+                    android:visibility="gone" />
             </LinearLayout>
         </LinearLayout>
 

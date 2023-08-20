@@ -17,21 +17,25 @@ import pe.idat.jessmyapp.adapter.ProductoAdapter
 import pe.idat.jessmyapp.adapter.ProductosPopularesAdapter
 import pe.idat.jessmyapp.entities.Producto
 import pe.idat.jessmyapp.retrofit.JessmiAdapter
+import pe.idat.jessmyapp.ui.viewmodel.ComunicacionViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
 
 class HomeFragment : Fragment() {
     private lateinit var rvProductos: RecyclerView
     private lateinit var rvProductosNuevos: RecyclerView
     private lateinit var popularAdapter: ProductosPopularesAdapter
     private lateinit var popularAdapter2: ProductosPopularesAdapter
+    private lateinit var viewModel: ComunicacionViewModel
     private val list = mutableListOf<CarouselItem>()
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        viewModel = ViewModelProvider(requireActivity())[ComunicacionViewModel::class.java]
+
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         rvProductos = view.findViewById(R.id.rvProductosPopulares)
         rvProductos.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
+
         val callStaff = JessmiAdapter.getApiService().getMasVendidos()
         callStaff.enqueue(object : Callback<List<Producto>> {
             override fun onResponse(call: Call<List<Producto>>, response: Response<List<Producto>>) {
@@ -43,7 +47,7 @@ class HomeFragment : Fragment() {
                         println("Precio: ${producto.precio}")
                         // Opcionalmente, puedes mostrar los resultados en un TextView o en otro elemento de la interfaz de usuario
                     }
-                    popularAdapter = ProductosPopularesAdapter(list)
+                    popularAdapter = ProductosPopularesAdapter(list,viewModel)
                     rvProductos.adapter = popularAdapter
                     popularAdapter.notifyDataSetChanged()
                 }
@@ -67,7 +71,7 @@ class HomeFragment : Fragment() {
                         println("Precio: ${producto.precio}")
                         // Opcionalmente, puedes mostrar los resultados en un TextView o en otro elemento de la interfaz de usuario
                     }
-                    popularAdapter2 = ProductosPopularesAdapter(list)
+                    popularAdapter2 = ProductosPopularesAdapter(list,viewModel)
                     rvProductosNuevos.adapter = popularAdapter2
                     popularAdapter2.notifyDataSetChanged()
                 }

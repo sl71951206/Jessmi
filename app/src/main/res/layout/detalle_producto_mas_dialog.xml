@@ -1,0 +1,117 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/jessmi_yellow"
+    android:layout_gravity="center"
+    android:padding="12dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_weight="2"
+            android:layout_height="45dp"
+            android:text="Ficha Detallada:"
+            android:textSize="25sp"
+            android:textStyle="italic" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnDetalleCloseHome"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            app:cornerRadius="19dp"
+            android:backgroundTint="@color/jessmi_yellow"
+            android:textStyle="bold"
+            android:text=""
+            app:iconSize="35dp"
+            app:icon="@drawable/ic_close"
+            android:textColor="@color/black"
+            app:iconGravity="end"
+            app:iconTint="@color/default_background" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/img_DetalleHome"
+        android:layout_width="300dp"
+        android:layout_gravity="center"
+        android:layout_height="300dp"
+        android:src="@drawable/sol" />
+
+    <TextView
+        android:id="@+id/txtDetalleProductoHome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:text="BOLSA CEMENTO"
+        android:textSize="20sp"
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/txtDetalleMarcaHome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="MARCA: SOL"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/txtDetallePrecioHome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="PRECIO: S/30.0"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="italic" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/btnMinusHome"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/ic_minus" />
+
+        <TextView
+            android:id="@+id/txtCantidadHome"
+            android:layout_width="33dp"
+            android:layout_height="match_parent"
+            android:text="1"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textStyle="italic" />
+
+        <ImageButton
+            android:id="@+id/btnAddHome"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/ic_add" />
+
+        <Button
+            android:id="@+id/btnAgregarHome"
+            android:layout_marginStart="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/black"
+            android:text="AGREGAR ITEM" />
+    </LinearLayout>
+</LinearLayout>
+
+
+
+

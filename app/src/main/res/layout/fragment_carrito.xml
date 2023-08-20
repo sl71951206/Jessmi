@@ -48,7 +48,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnComprarCarrito"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
             app:cornerRadius="19dp"
@@ -60,12 +60,12 @@
             app:iconSize="20sp"
             app:iconGravity="textStart"
             android:visibility="gone"
-            app:iconTint="@color/white" />
+            app:iconTint="@color/white"
+            android:layout_gravity="center" />
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnGenerarPedido"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:textSize="20sp"
             app:cornerRadius="19dp"
             android:backgroundTint="@color/jessmi_yellow"
@@ -75,11 +75,9 @@
             app:icon="@drawable/ic_pagar"
             app:iconSize="20sp"
             app:iconGravity="textStart"
+            android:visibility="visible"
             app:iconTint="@color/black"
-            />
-
-
-
+            android:layout_gravity="center" />
     </LinearLayout>
 
     <ImageView
@@ -89,8 +87,5 @@
         android:layout_height="380dp"
         android:layout_gravity="center"
         android:src="@drawable/empty_carrito_without_back"
-        android:layout_marginTop="75dp"
-        />
-
-
+        android:layout_marginTop="75dp" />
 </RelativeLayout>

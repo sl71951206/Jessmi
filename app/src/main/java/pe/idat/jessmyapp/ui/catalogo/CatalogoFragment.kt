@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,20 +20,77 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class CatalogoFragment : Fragment(){
+class CatalogoFragment : Fragment() {
     private lateinit var rvProductos: RecyclerView
+    private lateinit var imgCatalogoVacio: ImageView
     private lateinit var productoAdapter: ProductoAdapter
     private lateinit var viewModel: ComunicacionViewModel
+    private lateinit var svBusqueda: SearchView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val view = inflater.inflate(R.layout.fragment_catalogo, container, false)
         rvProductos = view.findViewById(R.id.rv_Catalogue)
+        imgCatalogoVacio = view.findViewById(R.id.imgCatalogoVacio)
         rvProductos.layoutManager = LinearLayoutManager(context)
-
         // Obtener referencia al ComunicacionViewModel
         viewModel = ViewModelProvider(requireActivity())[ComunicacionViewModel::class.java]
 
-        val callStaff = JessmiAdapter.getApiService().getProductos()
+        svBusqueda = view.findViewById(R.id.svBusqueda)
+        svBusqueda.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String): Boolean {
+                val callStaff = JessmiAdapter.getApiService().buscarPorNombreOMarca(query)
+                callStaff.enqueue(object : Callback<List<Producto>> {
+                    override fun onResponse(call: Call<List<Producto>>, response: Response<List<Producto>>) {
+                        if (response.isSuccessful) {
+                            if (response.body() != null) {
+                                val list = ArrayList(response.body())
+                                for (producto in list) {
+                                    println("Nombre: ${producto.nombre}")
+                                    println("Marca: ${producto.marca}")
+                                    println("Precio: ${producto.precio}")
+                                    // Opcionalmente, puedes mostrar los resultados en un TextView o en otro elemento de la interfaz de usuario
+                                    imgCatalogoVacio.visibility = View.GONE
+                                    rvProductos.visibility = View.VISIBLE
+                                    productoAdapter = ProductoAdapter(list,viewModel)
+                                    rvProductos.adapter = productoAdapter
+                                    productoAdapter.notifyDataSetChanged()
+                                }
+                            } else {
+                                rvProductos.visibility = View.GONE
+                                imgCatalogoVacio.visibility = View.VISIBLE
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<List<Producto>>, t: Throwable) {
+                        println("HAY UN ERROR JOVEN")
+                    }
+                })
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                if (newText == null || newText == "") {
+                    imgCatalogoVacio.visibility = View.GONE
+                    rvProductos.visibility = View.VISIBLE
+                    cargarProductos()
+                }
+                return false
+            }
+        })
+
+        cargarProductos()
+        //retornar vista
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+    }
+
+    fun cargarProductos() {
+        val callStaff = JessmiAdapter.getApiService().listarConCondicion()
         callStaff.enqueue(object : Callback<List<Producto>> {
             override fun onResponse(call: Call<List<Producto>>, response: Response<List<Producto>>) {
                 if (response.isSuccessful) {
@@ -52,14 +111,6 @@ class CatalogoFragment : Fragment(){
                 println("HAY UN ERROR JOVEN")
             }
         })
-        //retornar vista
-        return view
     }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-    }
-
 
 }

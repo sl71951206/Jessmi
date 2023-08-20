@@ -40,8 +40,10 @@ import pe.idat.jessmyapp.LoginExitosoActivity
 
 import pe.idat.jessmyapp.R
 import pe.idat.jessmyapp.adapter.CarritoAdapter
+import pe.idat.jessmyapp.adapter.ProductoAdapterGuest
 import pe.idat.jessmyapp.entities.Cliente
 import pe.idat.jessmyapp.entities.Producto
+import pe.idat.jessmyapp.entities.ProductoMapper
 import pe.idat.jessmyapp.retrofit.JessmiAdapter
 import pe.idat.jessmyapp.retrofit.JessmiService
 import pe.idat.jessmyapp.ui.viewmodel.ComunicacionViewModel
@@ -198,7 +200,14 @@ class CarritoFragment : Fragment() {
     }
 
     private fun registrarCompra(idCliente: Int ,productos:List<Producto>) {
-        val call = jessmiService.registrarPedido(idCliente,productos)
+        val listaMapper = ArrayList<ProductoMapper>()
+        productos.forEach {
+            producto ->
+            val p = ProductoMapper(producto.id_producto, producto.nombre, producto.marca,
+            producto.precio, producto.foto, producto.stock, producto.cantidad)
+            listaMapper.add(p)
+        }
+        val call = jessmiService.registrarPedido(idCliente,listaMapper)
         call.enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
