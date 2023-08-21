@@ -5,11 +5,15 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -19,10 +23,16 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import cn.pedant.SweetAlert.SweetAlertDialog
+import com.google.android.material.textfield.TextInputLayout
 import pe.idat.jessmyapp.databinding.ActivityLoginExitosoBinding
+import pe.idat.jessmyapp.entities.Cliente
+import pe.idat.jessmyapp.retrofit.JessmiAdapter
+import pe.idat.jessmyapp.retrofit.JessmiService
+import retrofit2.Call
+import retrofit2.Response
 
 class LoginExitosoActivity : AppCompatActivity() {
-
+    private lateinit var jessmiService: JessmiService
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityLoginExitosoBinding
@@ -31,7 +41,7 @@ class LoginExitosoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginExitosoBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        jessmiService = JessmiAdapter.getApiService()
         //Bloquear la Activity en Modo Vertical
         requestedOrientation= ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
@@ -59,6 +69,7 @@ class LoginExitosoActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.btnCerrarSesion -> logout()
+            R.id.btnEliminarCuenta -> eliminarCuenta()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -90,6 +101,121 @@ class LoginExitosoActivity : AppCompatActivity() {
             }
             .show()
 
+    }
+
+    private fun eliminarCuenta() {
+        SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+            .setTitleText("¿ESTÁ SEGURO QUE QUIERE ELIMINAR SU CUENTA?")
+            .setContentText("Esta acción no se puede deshacer.")
+            .setConfirmButton("Si Quiero") { sweetAlertDialog ->
+                sweetAlertDialog.dismissWithAnimation()
+                window.decorView.postDelayed({
+                    credencialesDeNuevo(this)
+                }, 500)
+
+            }
+            .setCancelButton("No quiero") { sweetAlertDialog ->
+                sweetAlertDialog.dismissWithAnimation()
+            }
+            .show()
+    }
+
+    private fun credencialesDeNuevo(contextEliminacion: Context) {
+        val builder = AlertDialog.Builder(this)
+        val inflater = layoutInflater
+        val dialogView = inflater.inflate(R.layout.eliminar_cuenta_layout, null)
+        builder.setView(dialogView)
+        val alertDialog = builder.create()
+
+        val dialogText = dialogView.findViewById<TextInputLayout>(R.id.til_correo)
+        dialogText.editText?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Acciones a realizar antes de que el texto cambie
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                dialogText.error=null
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                // Acciones a realizar después de que el texto cambie
+            }
+        })
+        val dialogText2 = dialogView.findViewById<TextInputLayout>(R.id.til_contrasena)
+        dialogText2.editText?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Acciones a realizar antes de que el texto cambie
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                dialogText2.error=null
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                // Acciones a realizar después de que el texto cambie
+            }
+        })
+
+        val dialogButton = dialogView.findViewById<Button>(R.id.btnEliminacion)
+        dialogButton.setOnClickListener {
+            sharedPreferences = getSharedPreferences("login", Context.MODE_PRIVATE)
+            val email = sharedPreferences.getString("email_key", "")
+            val txt = dialogText.editText?.text.toString()
+            val txt2 = dialogText2.editText?.text.toString()
+            if (txt == "" || txt2 == "") {
+                if (txt == "") {
+                    dialogText.error = "Este campo no puede estar vacío"
+                }
+                if (txt2 == "") {
+                    dialogText2.error = "Este campo no puede estar vacío"
+                }
+            } else if (txt != email) {
+                dialogText.error = "Este no es su correo"
+            }
+            else {
+                buscarCliente(txt, txt2, dialogText, dialogText2, alertDialog, contextEliminacion)
+            }
+        }
+        alertDialog.show()
+    }
+
+    private fun buscarCliente(correo: String, contrasena: String, txt: TextInputLayout, txt2: TextInputLayout, alerta: AlertDialog, contextEliminacion: Context) {
+        val cliente = Cliente(0, "", "", correo, contrasena)
+        val intent2 = Intent(this, MainActivity::class.java)
+        val call = jessmiService.eliminarCuenta(cliente)
+        call.enqueue(object: retrofit2.Callback<Cliente> {
+            override fun onResponse(call: Call<Cliente>, response: Response<Cliente>) {
+                if (response.isSuccessful) {
+                    alerta.dismiss()
+                    sharedPreferences = getSharedPreferences("login", Context.MODE_PRIVATE)
+                    val editor = sharedPreferences.edit()
+                    editor.remove("logged_in")
+                    editor.remove("id_key")
+                    editor.remove("name_key")
+                    editor.remove("lastname_key")
+                    editor.remove("email_key")
+                    editor.apply()
+                    window.decorView.postDelayed({
+                        toastEliminacion(contextEliminacion)
+                        startActivity(intent2)
+                        finish()
+                    }, 500)
+                } else {
+                    txt2.error = "Contraseña incorrecta"
+                }
+            }
+
+            override fun onFailure(call: Call<Cliente>, t: Throwable) {}
+        })
+    }
+
+    private fun toastEliminacion(context: Context) {
+        val inflater = LayoutInflater.from(context)
+        val layout = inflater.inflate(R.layout.eliminacion_toast, null)
+        val toast = Toast(context)
+        toast.duration = Toast.LENGTH_SHORT
+        toast.view = layout
+        toast.show()
     }
 
     override fun onBackPressed() {

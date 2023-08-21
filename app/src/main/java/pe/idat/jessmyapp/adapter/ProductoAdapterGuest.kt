@@ -41,6 +41,7 @@ class ProductoAdapterGuest (private val productoList: ArrayList<Producto>)
 
     override fun onBindViewHolder(holder: ProductoViewHolder, position: Int) {
         val producto = productoList[position]
+
         Glide.with(holder.itemView.context)
             .load(producto.foto)
             .into(holder.imgProducto)
@@ -58,7 +59,7 @@ class ProductoAdapterGuest (private val productoList: ArrayList<Producto>)
 
         holder.btnAdd.setOnClickListener {
             var cantidad = holder.txtCantidad.text.toString().toInt()
-            if (cantidad+1 < producto.stock) {
+            if (cantidad+1 < 100) {
                 cantidad++
                 holder.txtCantidad.text = cantidad.toString()
             }
@@ -90,7 +91,7 @@ class ProductoAdapterGuest (private val productoList: ArrayList<Producto>)
             .into(imageView)
         txtProducto.text = producto.nombre
         txtMarca.text = "MARCA: "+producto.marca
-        txtStock.text = "STOCK: "+producto.stock
+        txtStock.text = "STOCK: 100"
         txtPrecio.text = "S/"+producto.precio.toString()
 
         val dialog = dialogBuilder.create()

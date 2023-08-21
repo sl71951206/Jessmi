@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import pe.idat.jessmyapp.R
 import pe.idat.jessmyapp.adapter.ProductoAdapter
 import pe.idat.jessmyapp.entities.Producto
@@ -26,6 +27,7 @@ class CatalogoFragment : Fragment() {
     private lateinit var productoAdapter: ProductoAdapter
     private lateinit var viewModel: ComunicacionViewModel
     private lateinit var svBusqueda: SearchView
+    private lateinit var srlCatalogo: SwipeRefreshLayout
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val view = inflater.inflate(R.layout.fragment_catalogo, container, false)
@@ -79,6 +81,16 @@ class CatalogoFragment : Fragment() {
             }
         })
 
+        srlCatalogo = view.findViewById(R.id.srlCatalogo)
+        srlCatalogo.setOnRefreshListener {
+            if (svBusqueda.query.toString() != "") {
+                svBusqueda.setQuery("", false)
+            } else {
+                cargarProductos()
+            }
+            srlCatalogo.isRefreshing = false
+        }
+
         cargarProductos()
         //retornar vista
         return view
@@ -94,16 +106,11 @@ class CatalogoFragment : Fragment() {
         callStaff.enqueue(object : Callback<List<Producto>> {
             override fun onResponse(call: Call<List<Producto>>, response: Response<List<Producto>>) {
                 if (response.isSuccessful) {
-                    val list = ArrayList(response.body())
-                    for (producto in list) {
-                        println("Nombre: ${producto.nombre}")
-                        println("Marca: ${producto.marca}")
-                        println("Precio: ${producto.precio}")
-                        // Opcionalmente, puedes mostrar los resultados en un TextView o en otro elemento de la interfaz de usuario
+                    if (response.body() != null) {
+                        productoAdapter = ProductoAdapter(ArrayList(response.body()),viewModel)
+                        rvProductos.adapter = productoAdapter
+                        productoAdapter.notifyDataSetChanged()
                     }
-                    productoAdapter = ProductoAdapter(list,viewModel)
-                    rvProductos.adapter = productoAdapter
-                    productoAdapter.notifyDataSetChanged()
                 }
             }
 

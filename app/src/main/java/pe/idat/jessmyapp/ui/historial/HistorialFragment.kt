@@ -36,16 +36,13 @@ class HistorialFragment : Fragment()  {
         callStaff.enqueue(object : Callback<List<CompraMapper>> {
             override fun onResponse(call: Call<List<CompraMapper>>, response: Response<List<CompraMapper>>) {
                 if (response.isSuccessful) {
-                    val list = ArrayList(response.body())
-                    if (list.isNotEmpty()){
-                        //RV VISIBLE - MENSAJE OCULTO
+                    if (response.body() != null) {
                         imgHistorialEmpty.visibility=View.GONE
                         rvHistorial.visibility=View.VISIBLE
-                        historialAdapter = HistorialAdapter(list)
+                        historialAdapter = HistorialAdapter(ArrayList(response.body()))
                         rvHistorial.adapter = historialAdapter
                         historialAdapter.notifyDataSetChanged()
                     }
-
                     println("HISTORIAL SIN REGISTROS")
 
                 }
@@ -55,10 +52,6 @@ class HistorialFragment : Fragment()  {
                 println("HAY UN ERROR JOVEN")
             }
         })
-
-
-
-
 
         return view
     }

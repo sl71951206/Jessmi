@@ -9,7 +9,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 object JessmiAdapter {
 
     private var API_SERVICE: JessmiService? = null
-    private const val BASE_URL = "https://c2f7-2001-1388-540-e872-30e8-651c-8c3f-3484.ngrok-free.app"
+    private const val BASE_URL = "https://b4c3-2001-1388-540-e872-e4b1-c7ac-8bbe-c65a.ngrok-free.app"
     private const val USERNAME = "verde"
     private const val PASSWORD = "123"
 

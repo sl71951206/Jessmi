@@ -12,7 +12,12 @@
                 android:id="@+id/btnCerrarSesion"
                 android:icon="@drawable/ic_logout_red"
                 android:iconTint="@color/login_error"
-                android:title="Cerrar Sesión" />
+                android:title="Cerrar sesión" />
+            <item
+                android:id="@+id/btnEliminarCuenta"
+                android:icon="@drawable/ic_delete_red"
+                android:iconTint="@color/login_error"
+                android:title="Eliminar cuenta" />
         </menu>
     </item>
 </menu>

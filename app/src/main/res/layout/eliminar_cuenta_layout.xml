@@ -1,0 +1,82 @@
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:background="@color/default_background">
+
+        <TextView
+            android:id="@+id/dialogTitleEliminacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:text="Ingrese sus credenciales de nuevo para poder eliminar su cuenta."
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:layout_margin="20dp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_correo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_gravity="center"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:textColorHint="@color/jessmi_yellow"
+            app:startIconDrawable="@drawable/ic_email"
+            app:startIconTint="@color/jessmi_yellow"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/jessmi_yellow">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Correo electrónico"
+                android:textColor="@color/jessmi_yellow"
+                android:textStyle="bold" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_contrasena"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:textColorHint="@color/jessmi_yellow"
+            app:startIconDrawable="@drawable/ic_password"
+            app:startIconTint="@color/jessmi_yellow"
+            app:endIconMode="password_toggle"
+            app:endIconTint="@color/jessmi_yellow">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Contraseña"
+                android:inputType="textPassword"
+                android:textColor="@color/jessmi_yellow"
+                android:textStyle="bold" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnEliminacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_gravity="center"
+            app:cornerRadius="25dp"
+            android:backgroundTint="@color/jessmi_yellow"
+            android:textColor="@color/default_background"
+            android:textStyle="bold"
+            android:text="ELIMINAR CUENTA"
+            app:icon="@drawable/ic_delete"
+            app:iconGravity="textStart"
+            app:iconTint="@color/default_background"/>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

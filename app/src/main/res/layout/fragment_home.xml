@@ -1,109 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.home.HomeFragment"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/srlHome">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/jessmi_yellow"
-            android:layout_marginTop="25dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginStart="15dp"
-            app:cardElevation="15dp"
-            app:cardCornerRadius="15dp">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:src="@drawable/bienvenido2"
-                android:scaleType="fitXY" />
-
-
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card_publicidad_1"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="270dp"
-            android:backgroundTint="@color/jessmi_yellow"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginStart="15dp"
-            app:cardElevation="15dp"
-            app:cardCornerRadius="15dp">
-            <org.imaginativeworld.whynotimagecarousel.ImageCarousel
-                android:id="@+id/carruselpublicidad1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/jessmi_yellow"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="15dp"
+                app:cardElevation="15dp"
+                app:cardCornerRadius="15dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:src="@drawable/bienvenido2"
+                    android:scaleType="fitXY" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_publicidad_1"
                 android:layout_width="match_parent"
                 android:layout_height="270dp"
-                app:imageScaleType="fitXY"
-                app:autoPlay="true"
-                app:showTopShadow="false"
-                app:showBottomShadow="false"
-                app:showNavigationButtons="false"
-                app:autoPlayDelay="5000"/>
-        </androidx.cardview.widget.CardView>
+                android:backgroundTint="@color/jessmi_yellow"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="15dp"
+                app:cardElevation="15dp"
+                app:cardCornerRadius="15dp">
+                <org.imaginativeworld.whynotimagecarousel.ImageCarousel
+                    android:id="@+id/carruselpublicidad1"
+                    android:layout_width="match_parent"
+                    android:layout_height="270dp"
+                    app:imageScaleType="fitXY"
+                    app:autoPlay="true"
+                    app:showTopShadow="false"
+                    app:showBottomShadow="false"
+                    app:showNavigationButtons="false"
+                    app:autoPlayDelay="5000"/>
+            </androidx.cardview.widget.CardView>
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/jessmi_yellow"
-            android:layout_marginTop="13dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginStart="15dp"
-            app:cardCornerRadius="15dp">
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/jessmi_yellow"
+                android:layout_marginTop="13dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="15dp"
+                app:cardCornerRadius="15dp">
 
-            <ImageView
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:src="@drawable/prmasvendidos"
+                    android:scaleType="fitXY" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvProductosPopulares"
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:src="@drawable/prmasvendidos"
-                android:scaleType="fitXY" />
-        </androidx.cardview.widget.CardView>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvProductosPopulares"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/jessmi_yellow"
+                android:layout_marginTop="13dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="15dp"
+                app:cardCornerRadius="15dp">
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/jessmi_yellow"
-            android:layout_marginTop="13dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginStart="15dp"
-            app:cardCornerRadius="15dp">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:src="@drawable/prmasnuevos"
+                    android:scaleType="fitXY" />
+            </androidx.cardview.widget.CardView>
 
-            <ImageView
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvProductosNuevos"
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:src="@drawable/prmasnuevos"
-                android:scaleType="fitXY" />
-        </androidx.cardview.widget.CardView>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvProductosNuevos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </LinearLayout>
-</ScrollView>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </LinearLayout>
+    </ScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
